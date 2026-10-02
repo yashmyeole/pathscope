@@ -1,0 +1,28 @@
+name: Qdrant keep-alive
+
+# Qdrant Cloud free tier suspends after 7 idle days and deletes after 28.
+# Hitting it every 3 days keeps the resume demo alive through breaks.
+on:
+  schedule:
+    - cron: "17 9 */3 * *"   # 09:17 UTC every 3rd day (odd minute avoids the :00 rush)
+  workflow_dispatch: {}      # lets you trigger it by hand from the Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install --quiet httpx
+
+      - name: Ping cluster
+        env:
+          QDRANT_URL: ${{ secrets.QDRANT_URL }}
+          QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
+          QDRANT_COLLECTION: pathscope_plip_v1
+        run: python scripts/qdrant_ping.py

@@ -1,0 +1,195 @@
+{
+  "source": "flaviagiammarino/path-vqa",
+  "splits": {
+    "train": {
+      "qa_rows": 19654,
+      "unique_images": 2599,
+      "questions_per_image_mean": 7.56,
+      "unique_questions_text": 7453,
+      "unique_answers_text": 3225,
+      "answer_type_counts": {
+        "yes_no": 9751,
+        "short": 7159,
+        "open": 2744
+      },
+      "yes_no_pct": 49.61,
+      "answer_len_words": {
+        "mean": 1.79,
+        "median": 1.0,
+        "p90": 3.0,
+        "max": 34
+      },
+      "image_size_px": {
+        "width_median": 792.0,
+        "height_median": 528.0,
+        "width_min": 144,
+        "width_max": 1544
+      }
+    },
+    "validation": {
+      "qa_rows": 6259,
+      "unique_images": 832,
+      "questions_per_image_mean": 7.52,
+      "unique_questions_text": 2712,
+      "unique_answers_text": 1215,
+      "answer_type_counts": {
+        "yes_no": 3125,
+        "short": 2265,
+        "open": 869
+      },
+      "yes_no_pct": 49.93,
+      "answer_len_words": {
+        "mean": 1.79,
+        "median": 1.0,
+        "p90": 3.0,
+        "max": 28
+      },
+      "image_size_px": {
+        "width_median": 792.0,
+        "height_median": 528.0,
+        "width_min": 183,
+        "width_max": 1509
+      }
+    },
+    "test": {
+      "qa_rows": 6719,
+      "unique_images": 858,
+      "questions_per_image_mean": 7.83,
+      "unique_questions_text": 2909,
+      "unique_answers_text": 1299,
+      "answer_type_counts": {
+        "yes_no": 3362,
+        "short": 2430,
+        "open": 927
+      },
+      "yes_no_pct": 50.04,
+      "answer_len_words": {
+        "mean": 1.76,
+        "median": 1.0,
+        "p90": 3.0,
+        "max": 27
+      },
+      "image_size_px": {
+        "width_median": 792.0,
+        "height_median": 528.0,
+        "width_min": 188,
+        "width_max": 1462
+      }
+    }
+  },
+  "overlap": {
+    "train_vs_test": {
+      "questions": {
+        "shared_question_strings": 781,
+        "pct_of_b_unique_questions_seen_in_a": 26.85,
+        "pct_of_b_rows_with_question_seen_in_a": 67.24
+      },
+      "qa_pairs": {
+        "shared_qa_pairs": 1092,
+        "pct_of_b_unique_pairs_seen_in_a": 29.86
+      },
+      "images_exact_md5": {
+        "shared_exact_images": 0,
+        "pct_of_b_images_also_in_a": 0.0
+      }
+    },
+    "train_vs_validation": {
+      "questions": {
+        "shared_question_strings": 746,
+        "pct_of_b_unique_questions_seen_in_a": 27.51,
+        "pct_of_b_rows_with_question_seen_in_a": 67.52
+      },
+      "images_exact_md5": {
+        "shared_exact_images": 1,
+        "pct_of_b_images_also_in_a": 0.12
+      }
+    },
+    "validation_vs_test": {
+      "images_exact_md5": {
+        "shared_exact_images": 0,
+        "pct_of_b_images_also_in_a": 0.0
+      }
+    }
+  },
+  "total": {
+    "qa_rows": 32632,
+    "unique_images_all_splits": 4288,
+    "yes_no_pct": 49.76
+  },
+  "top_questions": [
+    {
+      "question": "what is present",
+      "count": 6820
+    },
+    {
+      "question": "what does this image show",
+      "count": 3015
+    },
+    {
+      "question": "where is this",
+      "count": 1151
+    },
+    {
+      "question": "is cardiovascular present",
+      "count": 279
+    },
+    {
+      "question": "is oral present",
+      "count": 270
+    },
+    {
+      "question": "where does this belong to",
+      "count": 253
+    },
+    {
+      "question": "where is this from",
+      "count": 247
+    },
+    {
+      "question": "is endocrine present",
+      "count": 215
+    },
+    {
+      "question": "is gastrointestinal present",
+      "count": 214
+    },
+    {
+      "question": "is hepatobiliary present",
+      "count": 210
+    },
+    {
+      "question": "is hematologic present",
+      "count": 206
+    },
+    {
+      "question": "is respiratory present",
+      "count": 201
+    },
+    {
+      "question": "is nervous present",
+      "count": 196
+    },
+    {
+      "question": "what are present",
+      "count": 178
+    },
+    {
+      "question": "is liver present",
+      "count": 163
+    }
+  ],
+  "images_with_open_answer": {
+    "test": {
+      "count": 511,
+      "pct": 59.56
+    },
+    "train": {
+      "count": 1558,
+      "pct": 59.95
+    },
+    "validation": {
+      "count": 494,
+      "pct": 59.38
+    }
+  }
+}

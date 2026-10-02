@@ -1,0 +1,35 @@
+# --- secrets ---
+.env
+.env.*
+!.env.example
+
+# --- data (never commit raw images or embeddings; manifests + stats are fine) ---
+data/raw/
+data/embeddings/
+*.parquet
+!data/manifests/*.parquet
+data/stats/contact_sheets/*.png
+
+# --- python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+dist/
+build/
+
+# --- notebooks ---
+.ipynb_checkpoints/
+
+# --- node / next.js (app/) ---
+app/node_modules/
+app/.next/
+app/out/
+app/.vercel/
+
+# --- os / editor ---
+.DS_Store
+.vscode/
+.idea/

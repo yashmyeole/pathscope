@@ -1,0 +1,61 @@
+[project]
+name = "pathscope"
+version = "0.1.0"
+description = "PathScope — measuring caption transferability in retrieval-augmented pathology image description (CS594, UIC)"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Yash Manohar Yeole", email = "yashmyeole@gmail.com" }]
+license = { text = "MIT" }
+
+# Core deps: enough to run the Phase 0/1 data scripts and talk to Qdrant.
+# Heavy ML deps (torch, transformers) live in the optional "embed" group so
+# `uv sync` stays fast on a laptop — PLIP embedding runs on Kaggle anyway.
+dependencies = [
+    "datasets>=3.0",
+    "pandas>=2.2",
+    "pyarrow>=17",
+    "pillow>=10",
+    "imagehash>=4.3",
+    "numpy>=1.26",
+    "qdrant-client>=1.11",
+    "httpx>=0.27",
+    "python-dotenv>=1.0",
+    "tqdm>=4.66",
+    "matplotlib>=3.9",
+]
+
+[project.optional-dependencies]
+embed = [
+    "torch>=2.3",
+    "transformers>=4.44",
+    "open_clip_torch>=2.26",
+]
+notebooks = [
+    "jupyter>=1.0",
+    "ipywidgets>=8",
+]
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+]
+
+[project.scripts]
+pathscope = "pathscope.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pathscope"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = ["notebooks", "*.ipynb"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
