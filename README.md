@@ -23,8 +23,8 @@ actually true of the query image, reported overall and per tier.
 
 | Phase | What | State |
 |---|---|---|
-| 0 | Foundations — repo, Qdrant cluster + keep-alive, PathVQA statistics | 🟡 in progress |
-| 1 | Data & leakage control (MD5, pHash, caption overlap) | ⬜ |
+| 0 | Foundations — repo, Qdrant cluster + keep-alive, PathVQA statistics | ✅ |
+| 1 | Data & leakage control (MD5, pHash, caption overlap) | ✅ `data/stats/phase1_leakage_report.md` |
 | 2 | PLIP embeddings + Qdrant index | ⬜ |
 | 3 | Retrieval sanity check (50 hand-inspected cases) | ⬜ |
 | 4 | Claim extraction, tiering, TCR metric, judge agreement | ⬜ |
@@ -42,13 +42,20 @@ pathscope/
 │   ├── config.py          # all paths + env settings
 │   ├── hashing.py         # pixel MD5 (image identity) and pHash (near-duplicates)
 │   ├── vectorstore.py     # Qdrant wrapper: ping / create / upsert / search
-│   ├── cli.py             # `pathscope manifest | stats | contact-sheet | ping`
-│   └── data/              # pathvqa.py (manifest), stats.py, contact_sheet.py
+│   ├── cli.py             # `pathscope <command>` — see below
+│   └── data/
+│       ├── pathvqa.py     # HF PathVQA -> per-row manifest with pixel-MD5 image ids
+│       ├── arch.py        # ARCH zips -> per-image manifest (never extracted)
+│       ├── captions.py    # PathVQA pseudo-captions from Q/A clusters
+│       ├── leakage.py     # exact / pHash / text leakage checks
+│       ├── split.py       # queries / dev / corpus manifests (split_v1)
+│       ├── leakage_report.py, stats.py, contact_sheet.py, pairs.py
 ├── scripts/               # standalone scripts (CI keep-alive ping)
 ├── notebooks/             # exploration + Kaggle GPU notebooks (embedding)
 ├── data/
 │   ├── raw/               # HF cache, downloads   (git-ignored)
 │   ├── manifests/         # small parquet tables  (committed)
+│   │   └── split_v1/      # queries.parquet, dev.parquet, corpus.parquet, flags, manual_near_dups.csv
 │   └── stats/             # JSON/MD stats, contact sheets
 ├── eval/                  # Phase 4–5 pipelines and result tables
 ├── app/                   # Next.js demo (Phase 6)
@@ -71,7 +78,15 @@ uv run pathscope manifest          # downloads PathVQA (~785 MB), hashes every i
 uv run pathscope stats             # -> data/stats/pathvqa_stats.{json,md}
 uv run pathscope contact-sheet     # -> data/stats/contact_sheets/*.png  (look at these!)
 uv run pathscope ping              # cluster responds?
+
+# 4. Phase 1 — put the two ARCH zips in data/raw/arch/ first (links below)
+uv run pathscope arch-manifest     # hashes 7.6k ARCH images straight from the zips
+uv run pathscope split             # leakage checks -> data/manifests/split_v1/
+uv run pathscope leakage-report    # -> data/stats/phase1_leakage_report.md
 ```
+
+The committed manifests mean Phases 2+ do **not** need the raw downloads to reproduce the split;
+you only need the zips / HF cache to look at pixels (embedding, contact sheets).
 
 See `SETUP.md` for the one-time account steps (Qdrant Cloud, GitHub secrets, HuggingFace email).
 
@@ -83,7 +98,22 @@ See `SETUP.md` for the one-time account steps (Qdrant Cloud, GitHub secrets, Hug
   its non-yes/no answers. About half the images are micrographs; the rest are gross specimens, clinical
   photographs and diagrams. Statistics: `data/stats/pathvqa_stats.md`; observations:
   `data/stats/phase0_findings.md`.
-- **ARCH** (Phase 1): 15k figure–caption pairs from textbooks and PubMed. Corpus side only.
+- **ARCH** ([Gamper & Rajpoot, CVPR 2021](https://warwick.ac.uk/fac/cross_fac/tia/data/arch/)): the
+  downloadable release has **7,579 images** (4,270 textbook figures with multi-panel "bags" + 3,309 PubMed
+  figures), not the 15k in the paper — the download page notes the discrepancy. Real captions, median
+  20 words. Corpus side only. CC BY-NC-SA 4.0. Download `books_set.zip` (5.3 GB) and `pubmed_set.zip`
+  (0.5 GB) into `data/raw/arch/`.
+
+### Split v1 (after leakage removal)
+
+| Role | Source | Images |
+|---|---|---|
+| Queries (scored) | PathVQA test | 858 → **744** |
+| Dev (prompt tuning only) | PathVQA validation | 832 → **699** |
+| Corpus | PathVQA train 2,599 + ARCH 7,542 | **10,141** |
+
+13% of test images had a near-duplicate or an identical caption in PathVQA train (none in ARCH).
+Full method and sensitivity tables: `data/stats/phase1_leakage_report.md`.
 
 ## Keep-alive
 

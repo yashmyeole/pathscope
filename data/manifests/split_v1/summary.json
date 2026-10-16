@@ -1,0 +1,159 @@
+{
+  "corpus": {
+    "rows": 10141,
+    "by_source": {
+      "arch_books": 4259,
+      "arch_pubmed": 3283,
+      "pathvqa_train": 2599
+    },
+    "within_corpus": {
+      "exact_duplicate_rows_removed": 37,
+      "near_duplicate_pairs_remaining": 49,
+      "phash_threshold": 58,
+      "exact_duplicates_by_source_pair": {
+        "arch_books|arch_books": 11,
+        "arch_pubmed|arch_pubmed": 26
+      },
+      "rows_before": 10178,
+      "rows_after": 10141
+    }
+  },
+  "queries_test": {
+    "n_queries": 858,
+    "n_corpus": 10141,
+    "config": {
+      "phash_threshold": 58,
+      "text_threshold": 85.0,
+      "text_min_words": 6
+    },
+    "exact": {
+      "n": 0,
+      "pct": 0.0
+    },
+    "near": {
+      "n": 37,
+      "pct": 4.31,
+      "n_excluding_exact": 37,
+      "n_auto_at_threshold": 30,
+      "n_manual_same": 7,
+      "grey_zone": {
+        "range": [
+          59,
+          86
+        ],
+        "n_pairs": 22,
+        "n_reviewed": 22,
+        "n_same": 7,
+        "n_different": 15
+      },
+      "n_at_or_below": {
+        "12": 7,
+        "24": 13,
+        "48": 27,
+        "58": 30,
+        "70": 36,
+        "86": 52
+      }
+    },
+    "text": {
+      "n": 85,
+      "pct": 9.91,
+      "n_eligible": 422,
+      "pct_of_eligible": 20.14,
+      "n_at_or_above": {
+        "80": 90,
+        "85": 85,
+        "90": 81,
+        "95": 78,
+        "100": 77
+      },
+      "sensitivity_min_words": {
+        "6": 85,
+        "8": 49,
+        "10": 29
+      }
+    },
+    "label_match_kept": {
+      "n": 248,
+      "pct": 28.9,
+      "note": "short diagnosis label identical to a corpus text; kept, used to stratify"
+    },
+    "any": {
+      "n": 114,
+      "pct": 13.29
+    },
+    "clean_queries": 744,
+    "clean": 744,
+    "shrinkage_pct": 13.29
+  },
+  "dev_validation": {
+    "n_queries": 832,
+    "n_corpus": 10141,
+    "config": {
+      "phash_threshold": 58,
+      "text_threshold": 85.0,
+      "text_min_words": 6
+    },
+    "exact": {
+      "n": 1,
+      "pct": 0.12
+    },
+    "near": {
+      "n": 32,
+      "pct": 3.85,
+      "n_excluding_exact": 31,
+      "n_auto_at_threshold": 27,
+      "n_manual_same": 5,
+      "grey_zone": {
+        "range": [
+          59,
+          86
+        ],
+        "n_pairs": 27,
+        "n_reviewed": 27,
+        "n_same": 5,
+        "n_different": 22
+      },
+      "n_at_or_below": {
+        "12": 6,
+        "24": 12,
+        "48": 22,
+        "58": 27,
+        "70": 29,
+        "86": 54
+      }
+    },
+    "text": {
+      "n": 83,
+      "pct": 9.98,
+      "n_eligible": 413,
+      "pct_of_eligible": 20.1,
+      "n_at_or_above": {
+        "80": 89,
+        "85": 83,
+        "90": 78,
+        "95": 74,
+        "100": 73
+      },
+      "sensitivity_min_words": {
+        "6": 83,
+        "8": 48,
+        "10": 31
+      }
+    },
+    "label_match_kept": {
+      "n": 229,
+      "pct": 27.52,
+      "note": "short diagnosis label identical to a corpus text; kept, used to stratify"
+    },
+    "any": {
+      "n": 112,
+      "pct": 13.46
+    },
+    "clean_queries": 720,
+    "leaked_vs_test": 48,
+    "leaked_vs_test_only": 21,
+    "clean": 699,
+    "shrinkage_pct": 15.99
+  }
+}

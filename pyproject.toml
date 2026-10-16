@@ -22,6 +22,7 @@ dependencies = [
     "python-dotenv>=1.0",
     "tqdm>=4.66",
     "matplotlib>=3.9",
+    "rapidfuzz>=3.9",
 ]
 
 [project.optional-dependencies]
@@ -56,6 +57,9 @@ extend-exclude = ["notebooks", "*.ipynb"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/pathscope/data/leakage_report.py" = ["E501"]  # markdown template strings
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

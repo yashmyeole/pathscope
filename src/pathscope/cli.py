@@ -49,6 +49,37 @@ def cmd_ping(args: argparse.Namespace) -> None:
     print(json.dumps(ping(get_client()), indent=2))
 
 
+def cmd_arch_manifest(args: argparse.Namespace) -> None:
+    from pathscope.data.arch import build_arch_manifest
+
+    out = config.MANIFEST_DIR / "arch_manifest.parquet"
+    df = build_arch_manifest(out_path=out, subsets=tuple(args.subsets), limit=args.limit)
+    errs = df.decode_error.notna().sum()
+    print(f"wrote {len(df):,} rows ({errs} decode errors) -> {out}")
+
+
+def cmd_split(args: argparse.Namespace) -> None:
+    from pathscope.data.leakage import LeakageConfig
+    from pathscope.data.split import SPLIT_DIR, build_split
+
+    pv = pd.read_parquet(config.MANIFEST_DIR / "pathvqa_manifest.parquet")
+    arch = pd.read_parquet(config.MANIFEST_DIR / "arch_manifest.parquet")
+    cfg = LeakageConfig(phash_threshold=args.phash, text_threshold=args.text)
+    summary = build_split(pv, arch, cfg)
+    print(json.dumps(summary, indent=2, default=str))
+    print(f"\nwrote split manifests -> {SPLIT_DIR}")
+
+
+def cmd_leakage_report(args: argparse.Namespace) -> None:
+    from pathscope.data.leakage_report import render_report
+
+    md = render_report()
+    out = config.STATS_DIR / "phase1_leakage_report.md"
+    out.write_text(md)
+    print(md)
+    print(f"\nwrote {out}")
+
+
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(prog="pathscope")
     sp = p.add_subparsers(dest="cmd", required=True)
@@ -68,6 +99,19 @@ def main(argv: list[str] | None = None) -> None:
 
     a = sp.add_parser("ping", help="Check the Qdrant cluster responds")
     a.set_defaults(fn=cmd_ping)
+
+    a = sp.add_parser("arch-manifest", help="Phase 1: hash ARCH images straight from the zips")
+    a.add_argument("--subsets", nargs="+", default=["pubmed", "books"], choices=["pubmed", "books"])
+    a.add_argument("--limit", type=int, default=None, help="images per subset (quick tests)")
+    a.set_defaults(fn=cmd_arch_manifest)
+
+    a = sp.add_parser("split", help="Phase 1: leakage checks + clean queries/dev/corpus manifests")
+    a.add_argument("--phash", type=int, default=58, help="pHash Hamming threshold (of 256 bits)")
+    a.add_argument("--text", type=float, default=85.0, help="token_sort_ratio threshold")
+    a.set_defaults(fn=cmd_split)
+
+    a = sp.add_parser("leakage-report", help="Phase 1: render the leakage report from split_v1")
+    a.set_defaults(fn=cmd_leakage_report)
 
     args = p.parse_args(argv)
     args.fn(args)

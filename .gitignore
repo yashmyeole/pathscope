@@ -8,6 +8,9 @@ data/raw/
 data/embeddings/
 *.parquet
 !data/manifests/*.parquet
+!data/manifests/**/*.parquet
+!data/manifests/**/*.csv
+!data/manifests/**/*.json
 data/stats/contact_sheets/*.png
 
 # --- python ---

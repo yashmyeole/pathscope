@@ -1,0 +1,50 @@
+query_set,image_id,corpus_image_id,corpus_source,phash_dist,verdict,note,reviewed_by,reviewed_on
+test,9a8bb11fcbefd6187243ecd05b78036a,78a6c96a8ee46146043542e90685ad4d,pathvqa_train,60,different,"same diagram template, different stenosis annotations","Claude (visual, contact sheets part3/part4)",2026-10-16
+test,af451dab6225fbd4104ff3b0d8d91d4a,369f0714ac95356f03b6bf0255270c4f,pathvqa_train,60,same,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,07cd03de8f23b8846ed1afd01637ee76,a5c66c3ed0ab66dfe83e2c8fded592de,pathvqa_train,62,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,d50e34ec9c08d810199fd6f8d98c81c0,a78c542907e9e6963523637126adbee5,pathvqa_train,62,same,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,524ac46438a1fc19b94c6f8e6141e5df,4340a8f13f4c2721f3196508aaafadba,pathvqa_train,64,same,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,c95c448002b07f6d62850929c0cf76c6,e6280c571125a2e818b6b8f13bb04af1,pathvqa_train,68,same,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,68bbc18e65f9d638b08a37320d6df895,6cd252454b058bf95291bebedf21f5e3,pathvqa_train,70,same,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,ab9b5a288a20deb28937d8fb6d8f6c15,47dee6e52c2fa03ef76c4e0b0cce6535,pathvqa_train,70,same,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,02b0ee591027e9bc2d10118c6c6303c5,9ec016db990721f0af59a98fe3c19e78,pathvqa_train,72,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,42d0f277172475f7b866d120db249e7b,1448adffe87ee052b96b9a93d7a9cb4b,pathvqa_train,72,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,70ddb99c8410e2c07476fce07c2570ba,c66170cece2a8d4573895e4cda24b1da,pathvqa_train,74,same,"two-panel figure, identical layout and tissue","Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,c6caa44ddefa117257f3ab5ebf121f75,b84b2650c07965df696aa90ddac1a287,pathvqa_train,76,same,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,0ffa665c29e44fa1d0c6e948269e6307,53592fb8288f8dc65425338dd42b0603,pathvqa_train,78,different,multi-panel layout attractor (corpus row matches 3 different queries),"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,113dd5f8762511a2ee0590fd5bdb082b,55cf388b63276b54d4c8cc688cbe2a0a,pathvqa_train,78,different,"same artery, trichrome vs H&E — different image, same case (text check)","Claude (visual, contact sheets part3/part4)",2026-10-16
+test,28ba43c13c8502063115578b1fe88ac2,435476e56bbeb5eb2007d2acb967e3aa,arch_books,78,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,6411be04f6e3dfcacc001393eb3d0f6d,c13b642af67a4851132386a0fd07ee6d,pathvqa_train,78,same,"same field, brightfield vs partially polarised","Claude (visual, contact sheets part3/part4)",2026-10-16
+test,663ba53155135ee11bd147a495393f82,2e774e48e1a117f29f97e45e64831696,pathvqa_train,78,same,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,e8c56cdcf5b44375da521151e6dcb5d8,53592fb8288f8dc65425338dd42b0603,pathvqa_train,78,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,28ea2ae136767d75764a3e17990c16f0,acca42044bf75967a5566c162e77c04c,pathvqa_train,80,same,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,485c2d7c9eb8926d69f48549ea8d2adc,db6e16bf4abf44b28e96f449235c5662,pathvqa_train,80,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,e3d7f50d9197eb9fb24715eb97e60d35,70906def2d672658dfcf8f9c00ec4f95,pathvqa_train,80,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,1bae6a9490b62f4a314dfe1371716510,edec90bcbccbb73d9a9425372f7f74d0,pathvqa_train,82,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,6dd188ca947a3b11d3267a3dc1725d73,626b0c319b17b914cbb2dde90794ad86,pathvqa_train,82,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,95fa0447f09347ca5ea5b0535d2eaf6b,53592fb8288f8dc65425338dd42b0603,pathvqa_train,82,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,d410a3b302da0e300675c72a9a760426,6b26b8f15acc11b544041243f895ad40,pathvqa_train,82,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,1c7b6a48845de937596f8ada2386bef3,450c7ec02a6916cdb2aba5d482e63157,arch_books,84,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,27c2b22a65718945bdc01d58e3e6cd7f,21d17a61bbfb2798571d2e2e2d5fd6d0,pathvqa_train,84,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,5b1d45593b9f4db08b4ee97d1a519388,f69c316da0680337fcdd07f2cbc43b64,arch_pubmed,84,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,64e4b87f78eb05eb77b3caf76653ff7f,41f8b4e88936d8014133fcd367ff5506,arch_books,84,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,8649fb513508e3ecaad40dac92850223,25edf102d9c15223cf302efa344db5d1,pathvqa_train,84,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,b6481c178dcfdf2f89eb3e08a86c6eb4,936bfcf08511c3bac7375a6b6deff83c,arch_pubmed,84,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,bfb9e1e5624b1fec59fca3baef576d2a,95a303f0fc5bb928414d33f1b8d13e22,arch_books,84,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,c63a88a8ef8bbb5a768df44421e64993,45df2e4680bc4ac6212071f7fb5aac5b,arch_books,84,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,dc15c865f52209985513d39a30ca1292,8ef13badcd8ca3c9ae71b0307b924569,arch_books,84,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,ef031bb104972da09279d9ed15c3a3b6,8b301eaf44a2786edc83b16e86a231fd,arch_books,84,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,f25b8dc98d881d4b4064d9387247a6ef,0002a07fbb7f47586bf85235d83b466e,arch_books,84,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,fb8dc0d8a40126e467b4114595a40460,84fbb455204b20d045587f229bf8820b,pathvqa_train,84,same,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,0c31caebe9a65faf2db416a1ea862e49,7e60e829de26f7f1a283feb1f023260f,arch_pubmed,86,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,0ef31f1bd0a653f7bfac858126a4526d,6c93fc29268d394c2e123f1e298b406e,pathvqa_train,86,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,38725d15e4bd15a4763d0a1feef56d26,a8a48bfad0f8bbeccf60a82141eaee89,pathvqa_train,86,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,6aa85e0098de23a74114b94e9b133926,22095499e7d268790ab1f6c516b225c7,pathvqa_train,86,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,6d558154e0e0b208bca9c0d1bcd8de54,e61ea753b90431a14b4fc9bd01a5e18b,arch_books,86,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+test,7f403f5e82bb3336ef9e555a06e18e4b,393047aade91472c3ee18940a8a33479,pathvqa_train,86,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,a567fd77c55a9b2c6ee8db1de912766a,4a3e97001e089726084abd63b8507637,pathvqa_train,86,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,b098232f033b1a59c7be54af6ee4eab8,65c7a67b10cdf9295be485364f503be7,pathvqa_train,86,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,b0fd0ade502f4d1db1664f01868a74ad,2e46d3b1ffbfc83142181b9df6b1245d,arch_books,86,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,d09d787a66b054008ab31b2c2ad00d04,01927a8982942cf30f3231287707a0c8,pathvqa_train,86,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,d95936a5536284b7a2ad600702cdd4ef,c66170cece2a8d4573895e4cda24b1da,pathvqa_train,86,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
+dev,ef1477ac86ed0bee2e852503c41d493f,fcf1e4789591a7012a57441061a9e46c,pathvqa_train,86,different,,"Claude (visual, contact sheets part3/part4)",2026-10-16
