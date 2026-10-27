@@ -32,7 +32,10 @@ EMBED_DIM = 512
 # Qdrant
 QDRANT_URL = os.getenv("QDRANT_URL", "")
 QDRANT_API_KEY = os.getenv("QDRANT_API_KEY", "")
-QDRANT_COLLECTION = os.getenv("QDRANT_COLLECTION", "pathscope_plip_v1")
+QDRANT_COLLECTION = os.getenv("QDRANT_COLLECTION", "pathscope_plip_v1")  # corpus only
+# Test + dev queries live in their own collection so a search of the corpus can never return a
+# query image, by construction rather than by remembering a filter.
+QDRANT_QUERY_COLLECTION = os.getenv("QDRANT_QUERY_COLLECTION", QDRANT_COLLECTION + "_queries")
 
 # Reproducibility
 SEED = 594

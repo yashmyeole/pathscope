@@ -25,7 +25,7 @@ actually true of the query image, reported overall and per tier.
 |---|---|---|
 | 0 | Foundations — repo, Qdrant cluster + keep-alive, PathVQA statistics | ✅ |
 | 1 | Data & leakage control (MD5, pHash, caption overlap) | ✅ `data/stats/phase1_leakage_report.md` |
-| 2 | PLIP embeddings + Qdrant index | ⬜ |
+| 2 | PLIP embeddings + Qdrant index | ✅ `pathscope embed / index / neighbors` |
 | 3 | Retrieval sanity check (50 hand-inspected cases) | ⬜ |
 | 4 | Claim extraction, tiering, TCR metric, judge agreement | ⬜ |
 | 5 | Generation + image-blind / random-neighbour controls | ⬜ |
@@ -68,7 +68,7 @@ pathscope/
 # 1. Python env (uv: https://docs.astral.sh/uv/)
 uv sync                      # core deps
 uv sync --extra notebooks    # + jupyter
-# PLIP/torch are only needed on Kaggle: uv sync --extra embed
+# PLIP/torch are only needed to (re)embed — CPU is enough (~20 min): uv sync --extra embed
 
 # 2. Secrets
 cp .env.example .env         # fill in QDRANT_URL / QDRANT_API_KEY
@@ -83,6 +83,11 @@ uv run pathscope ping              # cluster responds?
 uv run pathscope arch-manifest     # hashes 7.6k ARCH images straight from the zips
 uv run pathscope split             # leakage checks -> data/manifests/split_v1/
 uv run pathscope leakage-report    # -> data/stats/phase1_leakage_report.md
+
+# 5. Phase 2 — needs the zips + HF cache, torch, and QDRANT_URL / QDRANT_API_KEY in .env
+uv run pathscope embed             # PLIP over corpus + test + dev -> data/embeddings/embeddings.parquet
+uv run pathscope index             # upload (batches of 100), verify counts, self-retrieval check
+uv run pathscope neighbors <image_id>   # 5 nearest corpus neighbours + captions
 ```
 
 The committed manifests mean Phases 2+ do **not** need the raw downloads to reproduce the split;

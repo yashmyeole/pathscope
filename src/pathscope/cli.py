@@ -80,6 +80,50 @@ def cmd_leakage_report(args: argparse.Namespace) -> None:
     print(f"\nwrote {out}")
 
 
+def cmd_embed(args: argparse.Namespace) -> None:
+    from pathscope.embed import run_embedding
+
+    df = run_embedding(limit=args.limit, batch=args.batch)
+    print(df.groupby("role").image_type.value_counts().to_string())
+    print(f"embedded {len(df):,} images -> {config.EMBED_DIR}")
+
+
+def cmd_label_types(args: argparse.Namespace) -> None:
+    from pathscope.embed import label_image_types
+
+    path = config.EMBED_DIR / "embeddings.parquet"
+    df = pd.read_parquet(path)
+    df["image_type"], df["image_type_p"] = label_image_types(df)
+    df.to_parquet(path, index=False)
+    print(pd.crosstab(df.source, df.image_type, normalize="index").round(2).to_string())
+
+
+def cmd_index(args: argparse.Namespace) -> None:
+    from pathscope.vectorstore import get_client, index_embeddings, self_retrieval_rate
+
+    df = pd.read_parquet(config.EMBED_DIR / "embeddings.parquet")
+    client = get_client(timeout=120)
+    print(json.dumps(index_embeddings(client, df), indent=2))
+    rate = self_retrieval_rate(client, df)
+    print(f"self-retrieval (200 corpus images, top-1 is itself): {rate:.1%}")
+
+
+def cmd_neighbors(args: argparse.Namespace) -> None:
+    import time
+
+    from pathscope.vectorstore import get_client, neighbors
+
+    client = get_client()
+    t = time.time()
+    own, hits = neighbors(client, args.image_id, k=args.k)
+    dt = time.time() - t
+    print(f"[{own['role']}] {own['source']}: {own['text'][:150]}\n")
+    for h in hits:
+        p = h.payload
+        print(f"{h.score:.3f}  [{p['source']}, {p['image_type']}]  {p['text'][:120]}")
+    print(f"\n{dt * 1000:.0f} ms")
+
+
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(prog="pathscope")
     sp = p.add_subparsers(dest="cmd", required=True)
@@ -112,6 +156,22 @@ def main(argv: list[str] | None = None) -> None:
 
     a = sp.add_parser("leakage-report", help="Phase 1: render the leakage report from split_v1")
     a.set_defaults(fn=cmd_leakage_report)
+
+    a = sp.add_parser("embed", help="Phase 2: PLIP-embed corpus/test/dev -> embeddings.parquet")
+    a.add_argument("--limit", type=int, default=None, help="images per role (quick test)")
+    a.add_argument("--batch", type=int, default=32)
+    a.set_defaults(fn=cmd_embed)
+
+    a = sp.add_parser("label-types", help="Phase 2: re-fit image-type labels on embeddings.parquet")
+    a.set_defaults(fn=cmd_label_types)
+
+    a = sp.add_parser("index", help="Phase 2: upload embeddings.parquet to Qdrant and verify")
+    a.set_defaults(fn=cmd_index)
+
+    a = sp.add_parser("neighbors", help="Phase 2: nearest corpus neighbours of an image id")
+    a.add_argument("image_id")
+    a.add_argument("-k", type=int, default=5)
+    a.set_defaults(fn=cmd_neighbors)
 
     args = p.parse_args(argv)
     args.fn(args)

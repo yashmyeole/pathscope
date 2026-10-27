@@ -57,10 +57,10 @@ the winter break.
 3. Create a read token at https://huggingface.co/settings/tokens → `HF_TOKEN` in `.env`.
    PLIP (`vinid/plip`) is ungated, so nothing in Phase 2 blocks on this.
 
-## 5. Kaggle (2 min)
+## 5. Kaggle (optional now)
 
-https://www.kaggle.com → verify phone number (required to enable GPU + Internet in notebooks).
-You get 30 GPU-hours/week; Phase 2 needs about ten minutes of it.
+Phase 2 was run on CPU (PLIP is small: ~11.6k images in ~20 min), so Kaggle is no longer needed for
+v1. Verify a phone at https://www.kaggle.com only if you want a free GPU later (Phase 5 upgrades).
 
 ## 6. Ask about pathologist access (longest lead time of anything)
 

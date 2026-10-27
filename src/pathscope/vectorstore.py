@@ -1,8 +1,10 @@
-"""Thin Qdrant wrapper. Phase 0 only needs `ping`; collection create/upsert/search are here so
-Phase 2 has a home and so the ping can report collection state once it exists."""
+"""Thin Qdrant wrapper: ping, collection create, batched upsert, search, and the Phase 2 helpers
+(index a parquet of embeddings, self-retrieval check, neighbours of an image id)."""
 
 from __future__ import annotations
 
+import numpy as np
+import pandas as pd
 from qdrant_client import QdrantClient
 from qdrant_client.http import models as qm
 
@@ -24,9 +26,9 @@ def ping(client: QdrantClient) -> dict:
     Returning counts rather than just 'ok' means the keep-alive log doubles as a sanity check."""
     cols = [c.name for c in client.get_collections().collections]
     info: dict = {"collections": cols}
-    if config.QDRANT_COLLECTION in cols:
-        cnt = client.count(config.QDRANT_COLLECTION, exact=True).count
-        info[config.QDRANT_COLLECTION] = {"points": cnt}
+    for name in (config.QDRANT_COLLECTION, config.QDRANT_QUERY_COLLECTION):
+        if name in cols:
+            info[name] = {"points": client.count(name, exact=True).count}
     return info
 
 
@@ -67,3 +69,62 @@ def search(
     return client.query_points(
         collection_name=name, query=vector, limit=k, query_filter=flt, with_payload=True
     ).points
+
+
+# ---------------------------------------------------------------- Phase 2: index + neighbours
+PAYLOAD_COLS = ["role", "source", "image_id", "text", "image_type", "figure_id", "label_match"]
+
+
+def _clean(v):
+    return None if v is None or (isinstance(v, float) and np.isnan(v)) else v
+
+
+def to_points(df: pd.DataFrame) -> list[qm.PointStruct]:
+    """The point id IS the image's pixel-MD5 (a valid 32-hex UUID), so any image id can be
+    looked up directly and ids are stable across re-indexing."""
+    cols = [c for c in PAYLOAD_COLS if c in df.columns]
+    return [
+        qm.PointStruct(
+            id=r["image_id"],
+            vector=np.asarray(r["embedding"], dtype="float32").tolist(),
+            payload={c: _clean(r[c]) for c in cols},
+        )
+        for r in df.to_dict("records")
+    ]
+
+
+def index_embeddings(client: QdrantClient, df: pd.DataFrame) -> dict:
+    """Corpus rows -> corpus collection; test/dev rows -> query collection. Returns the exact
+    server-side counts next to the expected ones; raises if any point went missing."""
+    out = {}
+    for name, part in (
+        (config.QDRANT_COLLECTION, df[df.role == "corpus"]),
+        (config.QDRANT_QUERY_COLLECTION, df[df.role != "corpus"]),
+    ):
+        ensure_collection(client, name)
+        got = upsert_batches(client, to_points(part), name)
+        out[name] = {"expected": len(part), "in_qdrant": got}
+        if got != len(part):
+            raise RuntimeError(f"{name}: uploaded {len(part)} but Qdrant holds {got}")
+    return out
+
+
+def self_retrieval_rate(client: QdrantClient, df: pd.DataFrame, n: int = 200, seed: int = 594):
+    """Fraction of sampled corpus images whose own vector returns itself as the top hit."""
+    s = df[df.role == "corpus"].sample(min(n, (df.role == "corpus").sum()), random_state=seed)
+    hits = 0
+    for r in s.to_dict("records"):
+        top = search(client, np.asarray(r["embedding"]).tolist(), k=1)[0]
+        hits += str(top.id).replace("-", "") == r["image_id"]
+    return hits / len(s)
+
+
+def neighbors(client: QdrantClient, image_id: str, k: int = 5):
+    """Five nearest corpus neighbours of a stored image (query or corpus). A corpus image never
+    returns itself. Returns (the image's own payload, hits)."""
+    for name in (config.QDRANT_QUERY_COLLECTION, config.QDRANT_COLLECTION):
+        got = client.retrieve(name, ids=[image_id], with_vectors=True, with_payload=True)
+        if got:
+            ex = [image_id] if name == config.QDRANT_COLLECTION else None
+            return got[0].payload, search(client, got[0].vector, k=k, exclude_ids=ex)
+    raise KeyError(f"image id {image_id} not found in either collection")

@@ -29,7 +29,7 @@ dependencies = [
 embed = [
     "torch>=2.3",
     "transformers>=4.44",
-    "open_clip_torch>=2.26",
+    "scikit-learn>=1.4",
 ]
 notebooks = [
     "jupyter>=1.0",
