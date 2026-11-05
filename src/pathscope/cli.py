@@ -124,6 +124,109 @@ def cmd_neighbors(args: argparse.Namespace) -> None:
     print(f"\n{dt * 1000:.0f} ms")
 
 
+def cmd_retrieval_check(args: argparse.Namespace) -> None:
+    from pathscope import retrieval as r
+
+    df, X = r.load_embeddings()
+    nbrs = r.neighbour_table(df, X, k=5)
+    nbrs.to_csv(r.OUT_DIR / "neighbours.csv", index=False)
+
+    metrics = {"automatic": r.retrieval_stats(df, X, nbrs)}
+    caps, T = r.arch_text_vectors()
+    metrics["arch_crossmodal"] = r.arch_crossmodal(df, X, T, caps)
+    if (r.OUT_DIR / "review.csv").exists():
+        metrics["hand_review"] = r.review_summary()
+    r.save_json(metrics, "metrics.json")
+    print(json.dumps(metrics, indent=2))
+
+    if args.sheets:
+        for p in r.render_sheets(r.sample_queries(df, args.n), nbrs, df):
+            print("wrote", p)
+
+
+def _phase4_inputs():
+    from pathscope import retrieval as r
+
+    df, _ = r.load_embeddings()
+    nbrs = pd.read_csv(r.OUT_DIR / "neighbours.csv")
+    return df, nbrs
+
+
+def cmd_claims(args: argparse.Namespace) -> None:
+    from pathscope import claims as c
+
+    c.OUT_DIR.mkdir(parents=True, exist_ok=True)
+    if args.check:
+        ref = pd.read_csv(c.OUT_DIR / "extract_reference.csv")
+        texts = dict(ref.drop_duplicates("text_id")[["text_id", "text"]].to_numpy())
+        got = c.extract(texts, batch=args.batch)
+        got.to_csv(c.OUT_DIR / "extract_check.csv", index=False)
+        res = c.compare_extraction(got, ref)
+        (c.OUT_DIR / "extract_check.json").write_text(json.dumps(res, indent=2))
+        print(json.dumps(res, indent=2))
+        return
+
+    df, nbrs = _phase4_inputs()
+    texts = c.neighbour_texts(nbrs, df)
+    print(f"{len(texts)} unique neighbour captions")
+    try:
+        c.extract(texts, batch=args.batch, limit=args.limit)
+    finally:
+        out = c.extract(texts, limit=0)  # whatever is cached so far
+        out.to_csv(c.OUT_DIR / "claims.csv", index=False)
+        print(f"{out.text_id.nunique()}/{len(texts)} captions done, {len(out)} claims")
+
+
+def cmd_verify(args: argparse.Namespace) -> None:
+    from pathscope import claims as c
+
+    df, nbrs = _phase4_inputs()
+    cl = pd.read_csv(c.OUT_DIR / "claims.csv")
+    manifest = pd.read_parquet(config.MANIFEST_DIR / "pathvqa_manifest.parquet")
+    qids = list(dict.fromkeys(nbrs.query_id))
+    try:
+        c.verify(qids, nbrs, cl, df, manifest, limit=args.limit)
+    finally:
+        v = c.verify(qids, nbrs, cl, df, manifest, limit=0)
+        v.drop(columns=["text"]).to_csv(c.OUT_DIR / "verdicts.csv", index=False)
+        print(f"{v.query_id.nunique()}/{len(qids)} queries verified, {len(v)} claim checks")
+
+
+def cmd_tcr(args: argparse.Namespace) -> None:
+    from pathscope import claims as c
+
+    df, _ = _phase4_inputs()
+    v = pd.read_csv(c.OUT_DIR / "verdicts.csv")
+    res = c.tcr(v, df)
+
+    review = config.ROOT / "eval" / "phase3" / "review.csv"
+    if review.exists():
+        rv = pd.read_csv(review).set_index("query_id").same_case_in_top5
+        sub = v[v.query_id.isin(rv.index)]
+        res["reviewed_50_by_same_case"] = {
+            f"{t}|{flag}": c._rates(g)
+            for (t, flag), g in sub.assign(flag=sub.query_id.map(rv)).groupby(["tier", "flag"])
+        }
+
+    labels = c.OUT_DIR / "judge_sample.csv"
+    if labels.exists():
+        js = pd.read_csv(labels)
+        for col in ("label_yash", "label_draft"):
+            if col in js and js[col].notna().all():
+                res[f"judge_kappa_vs_{col}"] = {
+                    "n": len(js),
+                    "kappa": c.kappa(js.judge, js[col]),
+                    "agreement": round(float((js.judge == js[col]).mean()), 3),
+                }
+    else:
+        manifest = pd.read_parquet(config.MANIFEST_DIR / "pathvqa_manifest.parquet")
+        c.judge_sample(v, manifest).assign(label_yash=None).to_csv(labels, index=False)
+        print(f"wrote {labels}: label it blind (fill label_yash), then rerun")
+
+    (c.OUT_DIR / "tcr.json").write_text(json.dumps(res, indent=2))
+    print(json.dumps(res, indent=2))
+
+
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(prog="pathscope")
     sp = p.add_subparsers(dest="cmd", required=True)
@@ -172,6 +275,24 @@ def main(argv: list[str] | None = None) -> None:
     a.add_argument("image_id")
     a.add_argument("-k", type=int, default=5)
     a.set_defaults(fn=cmd_neighbors)
+
+    a = sp.add_parser("retrieval-check", help="Phase 3: neighbour stats, ARCH recall, review")
+    a.add_argument("--sheets", action="store_true", help="also render the query/neighbour sheets")
+    a.add_argument("--n", type=int, default=50, help="queries on the sheets")
+    a.set_defaults(fn=cmd_retrieval_check)
+
+    a = sp.add_parser("claims", help="Phase 4: neighbour captions -> tiered claims (Groq)")
+    a.add_argument("--check", action="store_true", help="only the 30 hand-referenced captions")
+    a.add_argument("--limit", type=int, default=None, help="max captions to send this run")
+    a.add_argument("--batch", type=int, default=12)
+    a.set_defaults(fn=cmd_claims)
+
+    a = sp.add_parser("verify", help="Phase 4: check claims against each query's Q/A (Gemini)")
+    a.add_argument("--limit", type=int, default=None, help="max new queries this run")
+    a.set_defaults(fn=cmd_verify)
+
+    a = sp.add_parser("tcr", help="Phase 4: TCR tables + judge agreement")
+    a.set_defaults(fn=cmd_tcr)
 
     args = p.parse_args(argv)
     args.fn(args)

@@ -1,0 +1,51 @@
+case,query_id,kind,top1_same_kind,top1_same_organ,top1_same_stain,top1_similar_mag,n_related_of_5,verdict,same_case_in_top5,note,reviewer
+Q01,78672d11c6667ec751a975ab898268db,diagram,y,y,na,na,1,loose,n,Hand-drawn textbook histology diagrams across the board; only #1 (vessel wall injury) shares the topic.,claude-draft
+Q02,1fe79715177d7b8c856ecf786e496902,gross,y,n,na,na,3,related,y,"Liver cut surface. Top-1 is a kidney, but #2, #4 and #5 are livers and #5 is the same alpha-1-antitrypsin case.",claude-draft
+Q03,727d44e51b762979206106e344a35226,gross,y,n,na,na,0,unrelated,n,"Yellow aorta on black matched to yellowish stomach, liver, adrenal and lung specimens. Colour and background, not organ.",claude-draft
+Q04,f2913dd664ec653510d5a7a6faa53b1d,gross,y,y,na,na,5,related,n,"Spleen infarct on blue; all five neighbours are infarcts, four of them in spleen.",claude-draft
+Q05,7ff3e88450b914d86cff0e2836821797,clinical,y,n,na,na,0,loose,n,"Adult autopsy photo (classifier called it a diagram). Neighbours are clinical photos of infants; same kind of picture, nothing else in common.",claude-draft
+Q06,d762c7a47ada3e7b037b1f5cc36f9d43,micrograph,y,y,y,y,5,related,n,Brain H&E; all five are brain or spinal cord at similar magnification.,claude-draft
+Q07,f609246241a31e51849e9a87df414237,micrograph,y,n,y,y,1,loose,n,"Bone-forming spindle cell lesion matched to other stromal H&E (lung, metastatic RCC, cementum). Texture match.",claude-draft
+Q08,605c7a19f4161a3115cc92b879ccf2ce,gross,y,y,na,na,2,related,n,"Polycystic kidney; #1 and #4 are cystic kidneys, the rest are other organs on the same blue background.",claude-draft
+Q09,7f403f5e82bb3336ef9e555a06e18e4b,gross,y,y,na,na,4,related,n,Heart cross-section; four of five are hearts.,claude-draft
+Q10,c9d10f8a9c3928bb80b4eee3a5eed0a6,micrograph,y,n,n,y,0,loose,n,CMV inclusion in kidney (PAS/Alcian blue). Neighbours are high-power H&E with large atypical nuclei from unrelated tissue.,claude-draft
+Q11,b7079fb741373d4c9f5bcbda86dd7a2a,gross,y,y,na,na,2,loose,n,"Opened teratoma; top-1 is opened cervix/endometrium (same system), the rest are kidney, larynx, brain.",claude-draft
+Q12,fe4dda5f8f8f01657b1992c1cb267f11,gross,y,y,na,na,2,related,y,Neonatal brain with intraventricular haemorrhage; #1 and #2 look like the same case.,claude-draft
+Q13,0af78f7e0d42ffb48008caf7cb267077,gross,y,n,na,na,0,unrelated,n,"Sternum with myeloma on a blue towel; neighbours are larynx, nose, peritoneum, breast on the same towel.",claude-draft
+Q14,d424ffcedcf1cfa0cbb758fd3dc2e681,gross,y,y,na,na,2,related,y,Pale skeletal muscle; #1 and #2 are close-ups of the same specimen.,claude-draft
+Q15,05aa3c7b6efc2ff88ce7f1e2169839fa,micrograph,y,y,y,y,2,related,y,"Synovium in RA; #1 and #3 are synovium, others prostate, teratoma, pemphigus.",claude-draft
+Q16,c4597bed26fa5bfa2defe2bbd298d589,gross,y,y,na,na,2,loose,n,"Pericarditis; #1 and #4 are hearts, others are red specimens on blue.",claude-draft
+Q17,2f6d1436cfbc7c5e05642167631a2c6e,clinical,y,y,na,na,3,related,n,"Anencephalic stillborn; #1, #2 and #5 are fetuses (two with anencephaly).",claude-draft
+Q18,560653cd604747fc6dfcc235e5c90638,gross,y,y,na,na,1,related,n,"Laryngeal carcinoma; top-1 is laryngeal squamous carcinoma, the rest are other opened organs.",claude-draft
+Q19,33071ecd518954865320e4b8756868a5,micrograph,y,y,n,y,5,related,n,"Diabetic glomerulosclerosis; all five are glomeruli from renal biopsies, mostly silver-stained ARCH images.",claude-draft
+Q20,6e79170543d820ed785f876c2c12ef42,gross,y,y,na,na,1,loose,n,"Sickle cell spleen; top-1 is a congested spleen, then lung and three livers with similar dark parenchyma.",claude-draft
+Q21,37a9c4e71a902cb09c77dc4c39387135,micrograph,y,y,y,y,1,loose,y,"Low-power iron stain of pituitary; top-1 is the same entity, the rest are pale low-power brain and soft tissue.",claude-draft
+Q22,f7bbcdbed582a52bc6cc704f49c99cdb,micrograph,y,y,y,y,5,related,n,Marrow aspirate with plasma cells; all five are Romanowsky-stained marrow or blood smears.,claude-draft
+Q23,ceb8f657ce0abbaf65ae2957bff33502,micrograph,y,y,y,y,1,related,y,"MAI in lymph node; top-1 is the same diagnosis, the others are granulomas or brain inflammation.",claude-draft
+Q24,419ad5ab9d074f2b84fd5be813852f46,xray,y,y,na,na,5,related,n,Jaw radiograph; all five are jaw/dental X-rays.,claude-draft
+Q25,63d7d6126a54ae2e53b5a96eb97ffa7c,micrograph,y,y,y,y,3,related,n,Inflamed intestinal mucosa; #2 to #4 are colitis/crypt images.,claude-draft
+Q26,4cf03592a62b6e30cb76ef7acb0a1ddd,micrograph,y,n,y,y,2,loose,y,"Sporotrichosis in skin; top-1 is myeloma marrow (similar dense cellularity), #4 and #5 are the same sporotrichosis case.",claude-draft
+Q27,f5346aaffb8788380273549322fa4c44,micrograph,y,y,y,y,5,related,y,"Cystic fibrosis pancreas; #1 to #4 are the same diagnosis, almost certainly sister panels.",claude-draft
+Q28,50515c068a94036627d6f1102108fdf2,micrograph,y,y,y,y,5,related,y,Malaria smear; all five are P. vivax smears from the same series.,claude-draft
+Q29,4efb41fb794d8c98c043940ae05466cd,micrograph,y,y,y,y,1,related,n,"Endocervix at low power; top-1 is endocervical mucosa, the others are mixed mucosae.",claude-draft
+Q30,9b33f5dad42264385acf005d1c9a3de0,micrograph,y,y,n,n,1,loose,n,Mucicarmine stain of cryptococcus in brain; top-1 is cryptococcal meningitis in H&E at higher power.,claude-draft
+Q31,f61d5ee2ddaf30e5279df6fcba1bd367,micrograph,y,y,y,y,5,related,n,"Oral mucosal lesion; all five are oral mucosa at the same power, different diagnoses.",claude-draft
+Q32,707856d9bc4c1cb840781feae4ef096a,gross,y,n,na,na,0,unrelated,n,"Accessory spleens; neighbours are tongue, bladder, kidney, uterus and lung on the same dark towel.",claude-draft
+Q33,eef0e11a6d30115f761bc773602eac99,gross,y,n,na,na,0,unrelated,n,Hydatid cysts of liver (multi-panel); neighbours are oral clinical photos and GI specimens.,claude-draft
+Q34,2170aef15318b5661f6f45e4d1ab3443,micrograph,y,y,y,y,1,related,y,"Cervix with squamous metaplasia; top-1 is the same diagnosis, the rest are lung and pancreas.",claude-draft
+Q35,0ff84caa8ead2004ef79792a0f5cf258,gross,y,n,na,na,0,unrelated,n,"Dilated heart on black; neighbours are uterus, fetus, kidney, testis and skull.",claude-draft
+Q36,022eb9cf731916206c42625f275617c0,gross,y,y,na,na,3,related,n,"Vertebral column; #1 sternum, #2 rib and #5 vertebrae are all bone.",claude-draft
+Q37,78b43b21c0b8ad90800aed8a7eea7998,clinical,y,y,na,na,3,loose,n,Neurofibromatosis of skin; neighbours are clinical skin photos with unrelated lesions.,claude-draft
+Q38,87a8718fb645d49d6f77cdac84cb89e5,gross,y,n,na,na,0,unrelated,n,"Testis with epididymitis on cyan; neighbours are gallbladder, heart, brain, ovary and kidney.",claude-draft
+Q39,7e7c1632ed53f7496003ef3ce646cebb,diagram,y,na,na,na,2,loose,n,"Cell cycle schematic; all neighbours are schematics, #3 and #4 are also about cell division.",claude-draft
+Q40,28ba43c13c8502063115578b1fe88ac2,micrograph,y,y,y,y,5,related,n,Oral haemangioma; all five are oral mucosal lesions at the same power.,claude-draft
+Q41,afa7f50e6fb8d310f219ab903a2cfc79,gross,y,y,na,na,1,related,y,"Rib lesion; #1 is the same specimen, the rest are unrelated.",claude-draft
+Q42,b2d2f1ba9abe582e82a5afecb5634be0,micrograph,y,unclear,n,y,0,unrelated,n,"Amyloid, Congo red plus polarisation in two panels; neighbours match the two-panel layout and colours, not the content.",claude-draft
+Q43,1d478f37ca2c997006900bf23a4e755c,micrograph,y,n,y,n,1,loose,n,"Bright pink bone-like tissue; neighbours share the colour (neuroma, thrombus, urate).",claude-draft
+Q44,0e99641a2dc0166e63f4ce518d5322cd,micrograph,y,unclear,y,y,2,loose,n,"Hodgkin lymphoma; neighbours are lymphoid or histiocytic (thymus, Gaucher, follicular lymphoma), no Reed-Sternberg cells.",claude-draft
+Q45,aaca01c749ebb9bcd4da243b9b1ff7a3,gross,y,n,na,na,1,loose,n,"Matted TB lymph nodes; #5 is TB of omentum, the rest are larynx, ovary and adrenal.",claude-draft
+Q46,a957d179e2ef489b3c84f7b763b10981,micrograph,y,n,n,y,0,unrelated,n,"Whole-mount eye with retinoblastoma (classifier called it a diagram); neighbours are low-power brain, cartilage and a liver lobule diagram.",claude-draft
+Q47,28d4fe71f3b27c70b69841630a4c6149,micrograph,y,n,y,y,5,related,n,"Sheets of small round cells; all five are small round cell tumours or lymphoid, from different organs.",claude-draft
+Q48,180ea76ae0e6adaf6b32ea0bf9e41971,micrograph,y,y,y,y,2,related,y,Kidney transplant rejection; #1 and #3 are the same diagnosis.,claude-draft
+Q49,0f604b4ef4ab6681ae080f91e47bd90d,micrograph,y,n,n,y,1,loose,n,Warthin-Starry stain for H. pylori; neighbours are brown IHC; #4 is a silver stain with spirochetes.,claude-draft
+Q50,2d3ae297b43b58d754a283c1b2bc65a9,gross,y,n,na,na,0,unrelated,n,"Small adrenals on blue; neighbours are spleen, kidney, thyroid and a diagram.",claude-draft

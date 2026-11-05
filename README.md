@@ -26,7 +26,7 @@ actually true of the query image, reported overall and per tier.
 | 0 | Foundations — repo, Qdrant cluster + keep-alive, PathVQA statistics | ✅ |
 | 1 | Data & leakage control (MD5, pHash, caption overlap) | ✅ `data/stats/phase1_leakage_report.md` |
 | 2 | PLIP embeddings + Qdrant index | ✅ `pathscope embed / index / neighbors` |
-| 3 | Retrieval sanity check (50 hand-inspected cases) | ⬜ |
+| 3 | Retrieval sanity check (50 hand-inspected cases) | ✅ `eval/phase3/report.md` |
 | 4 | Claim extraction, tiering, TCR metric, judge agreement | ⬜ |
 | 5 | Generation + image-blind / random-neighbour controls | ⬜ |
 | 6 | Next.js demo on Vercel | ⬜ |
@@ -88,6 +88,15 @@ uv run pathscope leakage-report    # -> data/stats/phase1_leakage_report.md
 uv run pathscope embed             # PLIP over corpus + test + dev -> data/embeddings/embeddings.parquet
 uv run pathscope index             # upload (batches of 100), verify counts, self-retrieval check
 uv run pathscope neighbors <image_id>   # 5 nearest corpus neighbours + captions
+
+# 6. Phase 3 (works offline from embeddings.parquet, no cluster needed)
+uv run pathscope retrieval-check --sheets   # -> eval/phase3/{metrics.json,neighbours.csv,sheets/}
+
+# 7. Phase 4 (GROQ_API_KEY and GEMINI_API_KEY in .env; free tiers, rerun after a daily cap)
+uv run pathscope claims --check   # extractor vs the 30 hand-written references
+uv run pathscope claims           # all neighbour captions -> eval/phase4/claims.csv
+uv run pathscope verify           # claims vs each query's Q/A -> eval/phase4/verdicts.csv
+uv run pathscope tcr              # -> eval/phase4/tcr.json (+ judge_sample.csv to label)
 ```
 
 The committed manifests mean Phases 2+ do **not** need the raw downloads to reproduce the split;

@@ -1,0 +1,55 @@
+You break pathology figure captions into short, self-contained claims about the image, and label
+each claim with a tier.
+
+Some captions are full sentences from textbooks or papers. Others are lists of fragments joined by
+"; " (answers taken from a question-answer dataset). Treat both the same way.
+
+Rules for claims
+- One fact per claim, written as a plain sentence about the image ("The tissue is liver.",
+  "Hepatocytes show fatty change.", "The stain is Congo red.").
+- Keep the caption's own words where you can. Do not add facts, explanations or textbook knowledge
+  that the caption does not state.
+- Drop anything that is not a fact about the image: figure or panel references ("see Fig. 7.15",
+  "A,", "(B)"), arrows and labels, praise or comments about the photo ("excellent example",
+  "good photo", "close-up view"), and fragments that mean nothing on their own ("1", "two",
+  "its", "photo", "this").
+- Merge exact repeats. If a fragment is a longer version of another, keep only the longer claim.
+- If nothing usable is left, return an empty list.
+
+Tiers
+- A (visual): what can be seen in the picture itself: kind of image (gross specimen, micrograph,
+  smear, X-ray, diagram), stain, magnification, organ or tissue, anatomical structures, tissue
+  architecture, cell types, cell and nuclear features, colour, deposits, organisms seen.
+- B (diagnostic): the name of a disease or tumour, or a pathological process (infarct, necrosis,
+  inflammation, fibrosis, metastasis, hyperplasia, cirrhosis), including its cause.
+- C (case-specific): facts about this patient or this specimen that the image alone cannot tell
+  you: age, sex, history, symptoms, treatment, time course ("five weeks after"), grade, stage,
+  sizes and weights, counts, margins, outcome.
+When unsure between A and B, use B if the claim names a disease or process, A otherwise.
+
+Answer in JSON only:
+{"items": [{"id": <id>, "claims": [{"claim": "...", "tier": "A"}, ...]}, ...]}
+Every input id must appear once in the output, in the same order.
+
+Example input:
+[{"id": 1, "text": "hepatobiliary; liver; liver cirrhosis alpha1 antitrypsin deficiency; 1"},
+ {"id": 2, "text": "Glomerulus in a renal biopsy specimen from a woman of 52 with proteinuria in the nephrotic range. Jones silver stain, x400."},
+ {"id": 3, "text": "excellent example; close-up view"}]
+
+Example output:
+{"items": [
+ {"id": 1, "claims": [
+   {"claim": "The specimen is from the hepatobiliary system.", "tier": "A"},
+   {"claim": "The organ is the liver.", "tier": "A"},
+   {"claim": "The liver shows cirrhosis.", "tier": "B"},
+   {"claim": "The cirrhosis is due to alpha-1 antitrypsin deficiency.", "tier": "B"}]},
+ {"id": 2, "claims": [
+   {"claim": "The image shows a glomerulus.", "tier": "A"},
+   {"claim": "The tissue is a renal biopsy.", "tier": "A"},
+   {"claim": "The patient is a woman.", "tier": "C"},
+   {"claim": "The patient is 52 years old.", "tier": "C"},
+   {"claim": "The patient has nephrotic-range proteinuria.", "tier": "C"},
+   {"claim": "The stain is Jones silver stain.", "tier": "A"},
+   {"claim": "The magnification is x400.", "tier": "A"}]},
+ {"id": 3, "claims": []}
+]}

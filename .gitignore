@@ -12,6 +12,8 @@ data/embeddings/
 !data/manifests/**/*.csv
 !data/manifests/**/*.json
 data/stats/contact_sheets/*.png
+eval/phase3/sheets/
+data/llm_cache/
 
 # --- python ---
 __pycache__/

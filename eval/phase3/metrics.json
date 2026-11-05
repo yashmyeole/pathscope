@@ -1,0 +1,161 @@
+{
+  "automatic": {
+    "n_queries": 744,
+    "n_corpus": 10141,
+    "top1_score": {
+      "mean": 0.928,
+      "50%": 0.93,
+      "min": 0.84,
+      "max": 0.992
+    },
+    "neighbour_source_share": {
+      "arch_books": {
+        "top5": 0.07,
+        "corpus": 0.42
+      },
+      "arch_pubmed": {
+        "top5": 0.052,
+        "corpus": 0.324
+      },
+      "pathvqa_train": {
+        "top5": 0.879,
+        "corpus": 0.256
+      }
+    },
+    "type_top1": {
+      "n": 744,
+      "rate": 0.962
+    },
+    "type_chance": 0.478,
+    "type_top1_by_query_type": {
+      "diagram": {
+        "n": 61,
+        "rate": 0.82
+      },
+      "micrograph": {
+        "n": 368,
+        "rate": 0.986
+      },
+      "photo": {
+        "n": 315,
+        "rate": 0.962
+      }
+    },
+    "organ_queries_tagged": "484 of 744",
+    "organ_top1": {
+      "n": 381,
+      "rate": 0.567
+    },
+    "organ_any_of_top5": {
+      "n": 470,
+      "rate": 0.691
+    },
+    "organ_chance_one_random": 0.065,
+    "organ_top1_by_query_type": {
+      "diagram": {
+        "n": 17,
+        "rate": 0.765
+      },
+      "micrograph": {
+        "n": 185,
+        "rate": 0.681
+      },
+      "photo": {
+        "n": 179,
+        "rate": 0.43
+      }
+    },
+    "organ_top1_by_top1_source": {
+      "arch_books": {
+        "n": 6,
+        "rate": 0.5
+      },
+      "arch_pubmed": {
+        "n": 3,
+        "rate": 0.333
+      },
+      "pathvqa_train": {
+        "n": 372,
+        "rate": 0.57
+      }
+    },
+    "organ_top1_by_label_match": {
+      "False": {
+        "n": 211,
+        "rate": 0.455
+      },
+      "True": {
+        "n": 170,
+        "rate": 0.706
+      }
+    },
+    "label_twin": {
+      "n": 237,
+      "median_rank": 105,
+      "in_top5": 0.274,
+      "in_top50": 0.435,
+      "chance_median_rank": 5070
+    }
+  },
+  "arch_crossmodal": {
+    "images": 7542,
+    "captions": 6459,
+    "image_to_text": {
+      "R@1": 0.74,
+      "R@10": 5.06,
+      "R@50": 14.7,
+      "R@200": 31.24
+    },
+    "text_to_image": {
+      "R@1": 0.68,
+      "R@10": 5.25,
+      "R@50": 14.91,
+      "R@200": 33.18
+    }
+  },
+  "hand_review": {
+    "cases": 50,
+    "verdict": {
+      "related": 25,
+      "loose": 16,
+      "unrelated": 9
+    },
+    "verdict_by_kind": {
+      "diagram": {
+        "loose": 2,
+        "related": 1
+      },
+      "micrograph": {
+        "related": 14,
+        "loose": 8,
+        "unrelated": 2
+      },
+      "photo": {
+        "related": 10,
+        "unrelated": 7,
+        "loose": 6
+      }
+    },
+    "top1_same_kind": {
+      "n": 50,
+      "rate": 1.0
+    },
+    "top1_same_organ": {
+      "n": 47,
+      "rate": 0.638
+    },
+    "top1_same_stain": {
+      "n": 24,
+      "rate": 0.75
+    },
+    "top1_similar_mag": {
+      "n": 24,
+      "rate": 0.917
+    },
+    "mean_related_of_5": 2.04,
+    "same_case_in_top5": {
+      "n": 50,
+      "rate": 0.24
+    }
+  }
+}

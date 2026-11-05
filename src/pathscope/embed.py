@@ -57,6 +57,25 @@ def embed_images(model, proc, loader: ImageLoader, rows: pd.DataFrame, batch: in
     return np.concatenate(vecs).astype("float32")
 
 
+def embed_texts(model, proc, texts, batch=64):
+    """PLIP text vectors, unit norm. Long captions get cut at CLIP's 77 tokens."""
+    import torch
+
+    out = []
+    for i in range(0, len(texts), batch):
+        t = proc(
+            text=list(texts[i : i + batch]),
+            return_tensors="pt",
+            padding=True,
+            truncation=True,
+            max_length=77,
+        )
+        with torch.no_grad():
+            f = _tensor(model.get_text_features(**t))
+        out.append(torch.nn.functional.normalize(f, dim=-1).numpy())
+    return np.concatenate(out).astype("float32")
+
+
 def label_image_types(df: pd.DataFrame, labels_csv=LABELS_CSV):
     """Fit on the hand-labelled subset of `df` (needs `embedding`, `image_id`); predict for all.
     Returns (labels, top-1 probability)."""
