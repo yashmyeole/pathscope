@@ -1,0 +1,312 @@
+item,query_id,neighbour_id,tier,claim,facts,judge,label_ref,label_yash
+1,89fdf3427116fa7c13ee7af70714ff1c,889b17c3f8f356a758a901d5e305eb6c,A,The specimen is from the cardiovascular system.,"Q: what does this image show?  A: coronary artery atherosclerosis
+Q: does this image show coronary artery atherosclerosis?  A: yes
+Q: what is present?  A: cardiovascular
+Q: is cardiovascular present?  A: yes
+Q: what is present?  A: vasculature
+Q: is vasculature present?  A: yes
+Q: where is this in?  A: in vasculature",supported,supported,
+2,1076295bec6b0df3c7166cfd51d01a47,cd9fe78f302556dec148c63176d9fc2e,A,The organ is thyroid.,"Q: does this image show adrenal, pheochromocytoma?  A: yes
+Q: what is present?  A: endocrine
+Q: is endocrine present?  A: yes
+Q: where does this belong to?  A: endocrine system",silent,contradicted,
+3,f56be4e7f3c3ae494e16ad1fcf386529,d460cf3242bcd27482a2ec22c0b02db8,A,The organ is the colon.,"Q: what does this image show?  A: appendix
+Q: does this image show appendix, normal histology?  A: yes
+Q: what is present?  A: gastrointestinal
+Q: is gastrointestinal present?  A: yes
+Q: where is this from?  A: gastrointestinal system",contradicted,silent,
+4,cc089148c8afcb6a87889a6da2d7d907,12e32f7407915acc7d5ce0f8055bfdb3,A,The specimen is from the pancreas.,"Q: what does this image show?  A: pancreatic fat necrosis
+Q: does this image show pancreatic fat necrosis?  A: yes
+Q: where is this?  A: pancreas",supported,supported,
+5,2fa05b35cd6843258385565d6412599e,8ec6bcec250a38486ae6632507bcbff8,A,There are two loops of umbilical cord around the neck.,"Q: what is present?  A: newborn cord around neck
+Q: is newborn cord around neck present?  A: yes",silent,silent,
+6,b7079fb741373d4c9f5bcbda86dd7a2a,9872d64f4dbbdef57f985b3612ebf5b9,A,The specimen is from the female reproductive system.,"Q: what does this image show?  A: opened lesion with necrotic center not too typical
+Q: does this image show opened lesion with necrotic center not too typical?  A: yes
+Q: what is present?  A: female reproductive
+Q: is female reproductive present?  A: yes
+Q: what is present?  A: ovary
+Q: is ovary present?  A: yes
+Q: what is present?  A: benign cystic teratoma
+Q: is benign cystic teratoma present?  A: yes
+Q: where does this part belong to?  A: female reproductive system",supported,supported,
+7,4c71be798f1886e8267844bfecbb0a92,64df6d193dad42e965b96c36bb85622c,A,The stain is hematoxylin and eosin.,"Q: what is seen in small arteries?  A: plexiform lesion
+Q: where is plexiform lesion characteristic of advanced pulmonary hypertension seen?  A: in small arteries
+Q: is plexiform lesion characteristic of advanced pulmonary hypertension seen in small arteries?  A: yes",silent,silent,
+8,e5888c597d07462f70ab10be2ebf1d43,28e764d695577dfe5f7094377412934a,B,The spleen shows atrophy.,"Q: how much week gestation gram infant lesion had ruptured causing 20 ml hemoperitoneum?  A: 30
+Q: what had ruptured causing 20 ml hemoperitoneum?  A: adrenal of premature 30 week gestation gram infant lesion
+Q: how many ml had adrenal of premature 30 week gestation gram infant lesion ruptured causing hemoperitoneum?  A: adrenal
+Q: what had adrenal of premature 30 week gestation gram infant lesion ruptured causing hemoperitoneum?  A: 20
+Q: had adrenal of premature 30 week gestation gram infant lesion ruptured causing 20 ml hemoperitoneum?  A: yes
+Q: what does this image show?  A: fixed tissue hemorrhage hematoma in left adrenal of premature 30 week gestation gram infant lesion had ruptured causing 20 ml hemoperitoneum unusual lesion
+Q: does this image show fixed tissue hemorrhage hematoma in left adrenal of premature 30 week gestation gram infant lesion had ruptured causing 20 ml hemoperitoneum unusual lesion?  A: yes
+Q: what is present?  A: endocrine
+Q: is endocrine present?  A: yes
+Q: what is present?  A: hemorrhage in newborn
+Q: is hemorrhage in newborn present?  A: yes
+Q: where does this belong to?  A: endocrine system
+Q: what had ruptured causing 20 ml hemoperitoneum unusual lesion?  A: fixed tissue hemorrhage hematoma in left adrenal of premature 30 week gestation gram infant
+Q: what had fixed tissue hemorrhage hematoma in left adrenal of premature 30 week gestation gram infant lesion ruptured causing?  A: ruptured 20 ml hemoperitoneum unusual",contradicted,contradicted,
+9,7507a7bc942b2d762128366a2f7e12f6,b2d664abb9ace99a7b683e0fa2fe91e0,A,The specimen is from the gastrointestinal system.,Q: one cusp has a partial fusion at whose center?  A: its,silent,silent,
+10,774bb78447693462f2239995bc77a114,17d3825e8cd54771816b37dd719f6a19,A,The specimen is placenta.,"Q: what psoas natural color large ovoid typical sarcoma?  A: opened muscle
+Q: does opened muscle psoa natural color large ovoid typical sarcoma?  A: yes
+Q: what does this image show?  A: opened muscle probably psoas natural color large ovoid typical sarcoma
+Q: does this image show opened muscle probably psoas natural color large ovoid typical sarcoma?  A: yes
+Q: what is present?  A: abdomen
+Q: is abdomen present?  A: yes
+Q: what is present?  A: peritoneum
+Q: is peritoneum present?  A: yes
+Q: what is present?  A: retroperitoneal leiomyosarcoma
+Q: is retroperitoneal leiomyosarcoma present?  A: yes
+Q: where is this area in the body?  A: abdomen
+Q: how does opened muscle psoa color large ovoid typical sarcoma?  A: natural
+Q: how does opened muscle psoa natural color ovoid typical sarcoma?  A: large
+Q: how does opened muscle psoa natural color large ovoid sarcoma?  A: typical",silent,contradicted,
+11,ea5db3d28651471a122c798d3be95d4a,3c32e9352b07dfe1af600427595007f4,A,The image shows an intimal smooth muscle cell with lipochrome pigment.,"Q: what does this image show?  A: intimal smooth muscle cells with lipid in cytoplasm and precipitated lipid in interstitial space
+Q: how does this image show intimal smooth muscle cells?  A: with lipid in cytoplasm and precipitated lipid in interstitial space
+Q: does this image show intimal smooth muscle cells with lipid in cytoplasm and precipitated lipid in interstitial space?  A: yes
+Q: what is present?  A: cardiovascular
+Q: is cardiovascular present?  A: yes
+Q: what is present?  A: vasculature
+Q: is vasculature present?  A: yes
+Q: what is present?  A: coronary artery
+Q: is coronary artery present?  A: yes
+Q: where is this?  A: vasculature",silent,silent,
+12,22f02c5894c7ed147e67ff41c35b0e4d,539761c7ff39b2d66b9db49914fbffcc,A,The cervix and endometrium are opened.,"Q: what does this image show?  A: thyroid
+Q: does this image show thyroid, goiter?  A: yes
+Q: what is present?  A: endocrine
+Q: is endocrine present?  A: yes
+Q: where does this belong to?  A: endocrine system",contradicted,contradicted,
+13,44c2b731df88dc65fa3be933724ad650,f2e6c4eef4ba21530550d01fc08c1638,B,The lesion is an adrenal cortical adenoma.,"Q: what does this image show?  A: parathyroid
+Q: does this image show parathyroid, adenoma?  A: yes
+Q: what is present?  A: endocrine
+Q: is endocrine present?  A: yes
+Q: where does this belong to?  A: endocrine system",contradicted,contradicted,
+14,b21a8e6759286d4e5a7e25cd0fec504f,27cddc246d5363c53820b3215a44c1ad,A,The system is cardiovascular.,"Q: what is contrasted with a normal adrenal gland?  A: diffuse hyperplasia of the adrenal gland
+Q: what is diffuse hyperplasia of the adrenal gland contrasted with?  A: a normal adrenal gland
+Q: how is diffuse hyperplasia of the adrenal gland contrasted?  A: with a normal adrenal gland
+Q: is diffuse hyperplasia of the adrenal gland contrasted with a normal adrenal gland?  A: yes
+Q: is a subtle nodularity evident?  A: yes
+Q: what is yellow and thickened?  A: the adrenal cortex
+Q: is the adrenal cortex yellow and thickened?  A: yes
+Q: what were diffusely hyperplastic?  A: adrenal glands in a patient with acth-dependent cushing syndrome
+Q: what was from a patient with acth-dependent cushing syndrome, in whom both adrenal glands were diffusely hyperplastic?  A: the adnormal gland
+Q: what was the abnormal gland from?  A: a patient with acth-dependent cushing syndrome
+Q: how was the abnormal gland?  A: from a patient with acth-dependent cushing syndrome
+Q: was the abnormal gland from a patient with acth-dependent cushing syndrome, in whom both adrenal glands were diffusely hyperplastic?  A: yes",contradicted,contradicted,
+15,89fdf3427116fa7c13ee7af70714ff1c,74596a15aa438ba8a26333e850a7f5b6,A,The specimen is from the cardiovascular system.,"Q: what does this image show?  A: coronary artery atherosclerosis
+Q: does this image show coronary artery atherosclerosis?  A: yes
+Q: what is present?  A: cardiovascular
+Q: is cardiovascular present?  A: yes
+Q: what is present?  A: vasculature
+Q: is vasculature present?  A: yes
+Q: where is this in?  A: in vasculature",supported,supported,
+16,72fd3a3e4abe77a1e78551da0dd80199,9eb813a466433134c5eb6b29b7bcb6ed,A,The specimen is from the cardiovascular system.,"Q: what does this image show?  A: leg veins
+Q: does this image show leg veins, thrombus?  A: yes
+Q: what is present?  A: cardiovascular
+Q: is cardiovascular present?  A: yes
+Q: what is present?  A: vasculature
+Q: is vasculature present?  A: yes
+Q: where is this from?  A: vasculature",supported,supported,
+17,4f20c6283450060714c9a99ed0504c07,cdab4ed1ff05fa41082dea1f32d48609,B,The pancreas shows fat necrosis.,"Q: what does this image show?  A: pancreatic fat necrosis
+Q: does this image show pancreatic fat necrosis?  A: yes
+Q: where is this?  A: pancreas",supported,supported,
+18,82dffdf39b8bd3b180cbd2d68c051065,146bc7f10701e86b1df828d5a029b21c,B,The vasculitis is polyarteritis nodosa.,"Q: what does this image show?  A: vasculitis
+Q: does this image show vasculitis, polyarteritis nodosa?  A: yes
+Q: what is present?  A: cardiovascular
+Q: is cardiovascular present?  A: yes
+Q: what is present?  A: vasculature
+Q: is vasculature present?  A: yes
+Q: where is this from?  A: vasculature",supported,supported,
+19,174060e4394469a946cff925cf2bddc4,b0cc83dab948e62099984dc882676d72,A,The organ is the adrenal gland.,"Q: what does this image show?  A: adrenal phaeochromocytoma
+Q: does this image show adrenal phaeochromocytoma?  A: yes
+Q: what is present?  A: endocrine
+Q: is endocrine present?  A: yes
+Q: where does this belong to?  A: endocrine system",supported,supported,
+20,5c4c548f3f4229831f55bf686da6e737,ccf880c14114d84bced5e69d0dd04a8e,B,The lesion is a brain infarct due to a ruptured saccular aneurysm and thrombosis of the right middle cerebral artery.,"Q: what does this image show?  A: breast
+Q: does this image show breast, fibroadenoma?  A: yes
+Q: where is this area in the body?  A: breast",contradicted,contradicted,
+21,563e75a5e83dc886e7d0987e6249db6b,08861b6e91e206d29d6791c3a80dd136,A,The organ is the urinary bladder.,"Q: does this image show normal cardiovascular?  A: yes
+Q: where is this?  A: heart",contradicted,contradicted,
+22,1460a22c7950ac2136dbd22f65abcbb8,e36105f442343fde359b7388b4e51ebc,A,The organ is the thymus.,"Q: what does this image show?  A: excellent invasive tumor with marked desmoplastic reaction
+Q: how does this image show excellent invasive tumor?  A: with marked desmoplastic reaction
+Q: does this image show excellent invasive tumor with marked desmoplastic reaction?  A: yes
+Q: what are seen?  A: intraductal lesions
+Q: are intraductal lesions seen?  A: yes
+Q: what is present?  A: breast
+Q: is breast present?  A: yes
+Q: what is present?  A: papillary intraductal adenocarcinoma
+Q: is papillary intraductal adenocarcinoma present?  A: yes
+Q: where is this area in the body?  A: breast",contradicted,contradicted,
+23,9379dbd3d6ee277fdeabeae7201ee1ef,d3fba2416955b85da63fd521c58a2d7c,A,The specimen is from the cardiovascular system.,"Q: what does this image show?  A: atherosclerosis
+Q: does this image show atherosclerosis?  A: yes
+Q: what is present?  A: cardiovascular
+Q: is cardiovascular present?  A: yes
+Q: what is present?  A: vasculature
+Q: is vasculature present?  A: yes
+Q: where is this in?  A: in vasculature
+Q: what left anterior descending coronary artery?  A: atherosclerosis
+Q: what is atherosclerosis left?  A: anterior descending coronary artery
+Q: how is atherosclerosis left anterior descending artery?  A: coronary",supported,supported,
+24,a9ec7e0a1954e17dd470dff5935cced2,15a7fcdc46167c44580f8770ab6f49f2,A,The tissue is a lymph node.,"Q: how many myomas does this image show opened uterus with quite typical?  A: three
+Q: what does this image show?  A: opened uterus with three myomas quite typical
+Q: does this image show opened uterus with three myomas quite typical?  A: yes
+Q: what is present?  A: female reproductive
+Q: is female reproductive present?  A: yes
+Q: what is present?  A: leiomyoma
+Q: is leiomyoma present?  A: yes
+Q: where does this part belong to?  A: female reproductive system",contradicted,contradicted,
+25,eebb45268464da53733da6ed53866a72,4d68636e4f32b9834e58acada4aeac9a,A,The specimen is endocrine.,"Q: what remain within the predominantly metaplastic, reddish mucosa of the distal esophagus?  A: a few areas of pale squamous mucosa
+Q: what do only a few areas of pale squamous mucosa remain within?  A: the predominantly metaplastic
+Q: do only a few areas of pale squamous mucosa remain within the predominantly metaplastic, reddish mucosa of the distal esophagus?  A: yes",silent,contradicted,
+26,97339eb794f3706b0925ad6f4ec486bc,2e426a74a6e2a09a44e83c5335ae82ca,A,The lesion is located on the left true vocal cord.,"Q: what does this image show?  A: excellent example of rather large submucous myoma
+Q: does this image show excellent example of rather large submucous myoma?  A: yes
+Q: what is present?  A: female reproductive
+Q: is female reproductive present?  A: yes
+Q: what is present?  A: uterus
+Q: is uterus present?  A: yes
+Q: what is present?  A: leiomyoma
+Q: is leiomyoma present?  A: yes
+Q: where does this belong to?  A: female reproductive system",contradicted,contradicted,
+27,305e0615db1508af4ae8e4331cf6fe16,0504d61672715898964fc5c7cc42d45e,A,The specimen is from the endocrine system.,"Q: what does this image show?  A: hashimoto 's thyroiditis
+Q: does this image show hashimoto 's thyroiditis?  A: yes
+Q: what is present?  A: endocrine
+Q: is endocrine present?  A: yes
+Q: where is this part in the figure?  A: endocrine system",supported,supported,
+28,d30c3cb57b4d99e19ff44d522dbd9f89,67918acb512c64fdbb011ff624c63373,A,The specimen is from the cardiovascular system.,"Q: what does this image show?  A: saphenous vein graft sclerosis
+Q: does this image show saphenous vein graft sclerosis?  A: yes
+Q: what is present?  A: cardiovascular
+Q: is cardiovascular present?  A: yes
+Q: what is present?  A: vasculature
+Q: is vasculature present?  A: yes
+Q: where is this in?  A: in vasculature",supported,supported,
+29,ec9273ae1ed05b8b90d5fc37d010eec0,cb403296d0accdfece1fb70d09130b94,A,The location is the hand.,"Q: what does this image show?  A: good close-up of gangrene
+Q: does this image show good close-up of gangrene?  A: yes
+Q: what are present?  A: extremities
+Q: are extremities present?  A: yes
+Q: what is present?  A: foot
+Q: is foot present?  A: yes",contradicted,contradicted,
+30,49eebc09e5709969a37158f6faf33ced,a4f327f94d8002c9231c2e26425db6e7,A,The specimen is from the endocrine system.,"Q: what does this image show?  A: adrenal
+Q: does this image show adrenal, metastatic gastric carcinoma, diffuse?  A: yes
+Q: what is present?  A: endocrine
+Q: is endocrine present?  A: yes
+Q: where does this belong to?  A: endocrine system",supported,supported,
+31,88fc691948ce970a05d5b836d529f45f,53b209bfb558a021daef428d1bc2a7a4,A,The specimen is from the cardiovascular system.,"Q: what does this image show?  A: heart
+Q: does this image show heart, papillary muscle, fibrosis, chronic ischemic heart disease?  A: yes
+Q: what is present?  A: cardiovascular
+Q: is cardiovascular present?  A: yes
+Q: where is this in?  A: in heart",supported,supported,
+32,124e2c68f80f3eaa1f7727548ce3fc60,a84354d7cb88517095397b752784e214,A,The twins are cephalothoracopagus janiceps type.,"Q: what does this image show?  A: close-up view of head anterior view
+Q: does this image show close-up view of head anterior view?  A: yes
+Q: what is present?  A: conjoined twins cephalothoracopagus janiceps
+Q: is conjoined twins cephalothoracopagus janiceps present?  A: yes",supported,supported,
+33,f533fe525e0fe24629361d561a65ff6f,85b6064a076e5f74b35e90f16d670533,B,The diagnosis is carcinoma.,"Q: what does this image show?  A: hemolytic disease of newborn
+Q: does this image show hemolytic disease of newborn?  A: yes",silent,silent,
+34,cb7fe998082b85fa8b932d8988631e2b,15a7fcdc46167c44580f8770ab6f49f2,A,The image shows cut mesentery with massively enlarged mesenteric nodes.,"Q: what does this image show?  A: sectioned uterus shown close-up with typical small myomas very good
+Q: does this image show sectioned uterus shown close-up with typical small myomas very good?  A: yes
+Q: what is present?  A: female reproductive
+Q: is female reproductive present?  A: yes
+Q: what is present?  A: leiomyomas
+Q: is leiomyomas present?  A: yes
+Q: where does this part belong to?  A: female reproductive system",contradicted,contradicted,
+35,008a2a3530f580a363c50b26ae3e0930,6c3f9b2c069303298bc2687dcc7b9462,A,The specimen is from the cardiovascular system.,"Q: what does this image show?  A: coronary artery atherosclerosis
+Q: does this image show coronary artery atherosclerosis?  A: yes
+Q: what is present?  A: cardiovascular
+Q: is cardiovascular present?  A: yes
+Q: what is present?  A: vasculature
+Q: is vasculature present?  A: yes
+Q: where is this?  A: vasculature",supported,supported,
+36,825cd8de6135c50e4938451a197c6e0c,b126e5f1ad84766a70859d19d01ce9b9,A,The specimen is an amputated penis.,"Q: what is expanded externally due to a gelatinous tumour?  A: bone
+Q: why is the bone expanded?  A: due to a gelatinous tumour
+Q: is the bone expanded externally due to a gelatinous tumour?  A: yes
+Q: what shows lobulated mass with bluish cartilaginous hue infiltrating the soft tissues?  A: sectioned surface
+Q: how does sectioned surface show lobulated mass?  A: with bluish cartilaginous hue infiltrating the soft tissues
+Q: does sectioned surface show lobulated mass with bluish cartilaginous hue infiltrating the soft tissues?  A: yes",silent,contradicted,
+37,9c6752e8f95bc700fdb63e2040ce7b31,ad98536cd5bacbd335851d413c193bf5,B,Acute myelogenous leukemia is diagnosed.,"Q: what results for the aml are shown in the figure?  A: flow cytometry
+Q: what are positive for the stem cell marker cd34 and the myeloid lineage specific markers cd33 and cd15 subset?  A: the tumor cells
+Q: what are the tumor cells positive for?  A: the stem cell marker cd34 and myeloid lineage specific markers cd33 and cd15
+Q: are the tumor cells positive for the stem cell marker cd34 and the myeloid lineage specific markers cd33 and cd15 subset?  A: yes",supported,supported,
+38,2757df1c5c9e81db82e4550bf5e724e2,c7e1116a97184bab0aac8fd9981273a2,A,There are areas of tissue loss and residual gliosis.,"Q: what is composed of granulation tissue overlaid by degraded blood?  A: the necrotic ulcer base
+Q: what is the necrotic ulcer base composed of?  A: granulation tissue overlaid by degraded blood
+Q: is the necrotic ulcer base composed of granulation tissue overlaid by degraded blood?  A: yes",silent,silent,
+39,dc099196e4f497bcdde90d8ed71a01f2,17657147da38f535d068fd5334ed1343,A,The specimen is from the endocrine system.,"Q: what does this image show?  A: fixed tissue of tuberculosis
+Q: does this image show fixed tissue of tuberculosis?  A: yes
+Q: what is present?  A: female reproductive
+Q: is female reproductive present?  A: yes
+Q: what is present?  A: fallopian tube
+Q: is fallopian tube present?  A: yes
+Q: where does this part belong to?  A: female reproductive system",contradicted,contradicted,
+40,54fc97f0c7bf68b7dade4879fb293037,2e426a74a6e2a09a44e83c5335ae82ca,B,The lesion is ulcerative.,"Q: where is this?  A: oral
+Q: what does this image show?  A: surgical specimen with molar tooth large ulcerating carcinoma on hard palate excellent example -66
+Q: what is present?  A: oral
+Q: is oral present?  A: yes
+Q: what is present?  A: squamous cell carcinoma
+Q: is squamous cell carcinoma present?  A: yes",supported,supported,
+41,80a51bfa9df70307736cd4703d43b0c4,a059133c8754f967e247f697121384f0,A,An ovarian cyst is opened.,"Q: what does this image show?  A: normal aortic valve
+Q: does this image show normal aortic valve?  A: yes
+Q: what is present?  A: cardiovascular
+Q: is cardiovascular present?  A: yes
+Q: where is this?  A: heart",contradicted,contradicted,
+42,78db26a9290410a6f1a3ff579a44a8d4,7ed83df2b765a69f46744a68fd2967d1,A,The peritoneum is shown.,"Q: does this image show excellent?  A: yes
+Q: what is present?  A: abdomen
+Q: is abdomen present?  A: yes
+Q: what is present?  A: peritoneum
+Q: is peritoneum present?  A: yes
+Q: what is present?  A: metastatic carcinoma
+Q: is metastatic carcinoma present?  A: yes
+Q: where is this area in the body?  A: abdomen",supported,supported,
+43,1ba93df3c44375a5282d803f4dba8b75,9ffe7cdb7ed84ec817ebd0fdbbfd121d,B,Retroperitoneal liposarcoma is present.,"Q: what does this image show?  A: flank muscle hematoma old showing typical chocolate appearance of blood coagulum young female with lupus and thrombocytopenia
+Q: what is present?  A: muscle
+Q: is muscle present?  A: yes
+Q: what is present?  A: soft tissue
+Q: is soft tissue present?  A: yes",silent,silent,
+44,cc146d6cb57eb29a4db8463e6fc60e31,a36a7673dde50d20de185ef107e66371,C,The observation is from case 14.,"Q: what shows a circumferential bright pink area of necrosis with protein deposition and inflammation?  A: the wall of the artery
+Q: what does the wall of the artery show with protein deposition and inflammation?  A: a circumferential bright pink area of necrosis
+Q: how does the wall of the artery show a circumferential bright pink area of necrosis?  A: with protein deposition and inflammation
+Q: does the wall of the artery show a circumferential bright pink area of necrosis with protein deposition and inflammation?  A: yes",silent,silent,
+45,057294a9d508cab88e846194b63976e5,539761c7ff39b2d66b9db49914fbffcc,A,The uterus is present.,"Q: what does this image show?  A: heart
+Q: does this image show heart, recent coronary artery bypass graft?  A: yes
+Q: what is present?  A: cardiovascular
+Q: is cardiovascular present?  A: yes
+Q: where is this?  A: heart",contradicted,contradicted,
+46,0d30a24a6bf2aa3a79217f80efd9f0a9,875ed8fde5e45a31559bfa557af83641,A,The organ is the brain.,"Q: does mycobacterium avium infection in a duodenal biopsy from a patient with aids show massive intracellular macrophage infection with acid-fast organisms filamentous and pink in this acid-fast stain preparation?  A: yes
+Q: are there inadequate t cells to mount a granulomatous response?  A: yes
+Q: what is aids?  A: acquired immunodeficiency syndrome
+Q: what does not occur in the absence of appropriate t-cell-mediated immunity?  A: granulomatous host response
+Q: does granulomatous host response not occur in the absence of appropriate t-cell-mediated immunity?  A: yes
+Q: what shows massive intracellular macrophage infection with acid-fast organisms (filamentous and pink in this acid-fast stain preparation)?  A: mycobacterium avium infection
+Q: what does mycobacterium avium infection in a duodenal biopsy from a patient with aids show?  A: massive intracellular macrophage infection with acid-fast organisms",silent,contradicted,
+47,174060e4394469a946cff925cf2bddc4,c4a6b692b3758722fc489946edb759e7,A,The specimen is from the gastrointestinal system.,"Q: what does this image show?  A: adrenal phaeochromocytoma
+Q: does this image show adrenal phaeochromocytoma?  A: yes
+Q: what is present?  A: endocrine
+Q: is endocrine present?  A: yes
+Q: where does this belong to?  A: endocrine system",contradicted,contradicted,
+48,37a9c4e71a902cb09c77dc4c39387135,fcaa70c8385ac071b454ea978a5e1180,A,The stain is iron stain.,"Q: what stain?  A: iron
+Q: does iron stain?  A: yes
+Q: what does this image show?  A: iron stain
+Q: does this image show iron stain?  A: yes
+Q: what is present?  A: endocrine
+Q: is endocrine present?  A: yes
+Q: what is present?  A: pituitary
+Q: is pituitary present?  A: yes
+Q: what is present?  A: hemochromatosis
+Q: is hemochromatosis present?  A: yes
+Q: where is this part in the figure?  A: endocrine system",supported,supported,
+49,9379dbd3d6ee277fdeabeae7201ee1ef,74596a15aa438ba8a26333e850a7f5b6,B,Atherosclerosis is present.,"Q: what does this image show?  A: atherosclerosis
+Q: does this image show atherosclerosis?  A: yes
+Q: what is present?  A: cardiovascular
+Q: is cardiovascular present?  A: yes
+Q: what is present?  A: vasculature
+Q: is vasculature present?  A: yes
+Q: where is this in?  A: in vasculature
+Q: what left anterior descending coronary artery?  A: atherosclerosis
+Q: what is atherosclerosis left?  A: anterior descending coronary artery
+Q: how is atherosclerosis left anterior descending artery?  A: coronary",supported,supported,
+50,3171b11a3652d1630addb8c39e406690,5e3f505e32261a096e1c6bbfcf29393c,A,The specimen shows marked fiber atrophy.,"Q: what does this image show?  A: muscle ruthenium red to illustrate glycocalyx
+Q: does this image show muscle ruthenium red to illustrate glycocalyx?  A: yes
+Q: what is present?  A: cardiovascular
+Q: is cardiovascular present?  A: yes
+Q: what is present?  A: vasculature
+Q: is vasculature present?  A: yes
+Q: what is present?  A: capillary
+Q: is capillary present?  A: yes
+Q: where is this mage from?  A: capillary",silent,silent,

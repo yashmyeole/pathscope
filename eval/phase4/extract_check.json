@@ -1,0 +1,19 @@
+{
+  "captions": 30,
+  "ref_claims": 91,
+  "model_claims": 89,
+  "recall": 0.846,
+  "precision": 0.865,
+  "tier_agreement_on_matched": 0.974,
+  "mean_abs_count_diff": 0.4,
+  "model_tiers": {
+    "A": 54,
+    "B": 32,
+    "C": 3
+  },
+  "ref_tiers": {
+    "A": 53,
+    "B": 36,
+    "C": 2
+  }
+}

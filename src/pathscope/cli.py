@@ -183,13 +183,18 @@ def cmd_verify(args: argparse.Namespace) -> None:
     df, nbrs = _phase4_inputs()
     cl = pd.read_csv(c.OUT_DIR / "claims.csv")
     manifest = pd.read_parquet(config.MANIFEST_DIR / "pathvqa_manifest.parquet")
-    qids = list(dict.fromkeys(nbrs.query_id))
+    # only queries whose five neighbour captions have all been through extraction
+    done = c.extracted_ids(c.neighbour_texts(nbrs, df))
+    tid = nbrs.image_id.map(df.set_index("image_id").text).map(c.text_id)
+    ready = nbrs.assign(ok=tid.isin(done)).groupby("query_id").ok.all()
+    qids = [q for q in dict.fromkeys(nbrs.query_id) if ready[q]]
+    print(f"{len(qids)}/{len(ready)} queries have all neighbour claims")
     try:
         c.verify(qids, nbrs, cl, df, manifest, limit=args.limit)
     finally:
         v = c.verify(qids, nbrs, cl, df, manifest, limit=0)
         v.drop(columns=["text"]).to_csv(c.OUT_DIR / "verdicts.csv", index=False)
-        print(f"{v.query_id.nunique()}/{len(qids)} queries verified, {len(v)} claim checks")
+        print(f"{v.query_id.nunique()}/{len(ready)} queries verified, {len(v)} claim checks")
 
 
 def cmd_tcr(args: argparse.Namespace) -> None:
@@ -210,8 +215,15 @@ def cmd_tcr(args: argparse.Namespace) -> None:
 
     labels = c.OUT_DIR / "judge_sample.csv"
     if labels.exists():
+        # refresh the judge column from the latest verdicts, keep the hand labels
         js = pd.read_csv(labels)
-        for col in ("label_yash", "label_draft"):
+        keys = ["query_id", "neighbour_id", "claim"]
+        latest = v.drop_duplicates(keys).set_index(keys).label
+        js["judge"] = [
+            latest.get(tuple(k), j) for k, j in zip(js[keys].values, js.judge, strict=True)
+        ]
+        js.to_csv(labels, index=False)
+        for col in ("label_yash", "label_ref"):
             if col in js and js[col].notna().all():
                 res[f"judge_kappa_vs_{col}"] = {
                     "n": len(js),

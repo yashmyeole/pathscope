@@ -43,6 +43,17 @@ def _check_items(items, ids):
                 raise ValueError(f"bad claim {c}")
 
 
+def extracted_ids(texts):
+    """text_ids whose claims are already in the cache (including captions with no claims)."""
+    _, version = _prompt("extract")
+    cache = llm.Cache("extract")
+    return {
+        tid
+        for tid, t in texts.items()
+        if cache.get(cache.key(llm.GROQ_MODEL, version, t)) is not None
+    }
+
+
 def extract(texts, batch=12, limit=None, call=None):
     """texts: {text_id: caption}. Returns one row per claim. Cached per caption, so it is safe to
     stop (or run out of quota) and start again."""
@@ -88,7 +99,11 @@ def extract(texts, batch=12, limit=None, call=None):
 
 
 def facts_for(image_id, manifest):
+    # PathVQA makes its "no" answers by pasting a random phrase from another caption into a true
+    # question, so they say nothing reliable about the image ("is hematoxylin-eosin seen in small
+    # arteries? no" on an H&E slide). Only the other answers are used as evidence.
     qa = manifest[manifest.image_id == image_id][["question", "answer"]].drop_duplicates()
+    qa = qa[qa.answer.str.strip().str.lower() != "no"]
     return "\n".join(f"Q: {q.strip()}  A: {a.strip()}" for q, a in qa.itertuples(index=False))
 
 

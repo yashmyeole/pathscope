@@ -47,11 +47,15 @@ class Cache:
             f.write(json.dumps({"key": key, "value": value}) + "\n")
 
 
-def _post(url, headers, body, min_gap, tries=6):
+def _post(url, headers, body, min_gap, tries=10):
     wait = 10.0
     for _ in range(tries):
         time.sleep(min_gap)
-        r = httpx.post(url, headers=headers, json=body, timeout=120)
+        try:
+            r = httpx.post(url, headers=headers, json=body, timeout=120)
+        except httpx.TransportError:
+            time.sleep(wait)
+            continue
         if r.status_code == 200:
             return r.json()
         if r.status_code == 429 or r.status_code >= 500:
@@ -63,6 +67,8 @@ def _post(url, headers, body, min_gap, tries=6):
             time.sleep(max(retry, wait))
             wait = min(wait * 2, 120)
             continue
+        if r.status_code == 400 and "json_validate_failed" in r.text:
+            raise ValueError("model returned invalid JSON")
         raise RuntimeError(f"{r.status_code}: {r.text[:500]}")
     raise QuotaExhausted(f"gave up after {tries} tries at {url}")
 

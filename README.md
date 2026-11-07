@@ -27,7 +27,7 @@ actually true of the query image, reported overall and per tier.
 | 1 | Data & leakage control (MD5, pHash, caption overlap) | ✅ `data/stats/phase1_leakage_report.md` |
 | 2 | PLIP embeddings + Qdrant index | ✅ `pathscope embed / index / neighbors` |
 | 3 | Retrieval sanity check (50 hand-inspected cases) | ✅ `eval/phase3/report.md` |
-| 4 | Claim extraction, tiering, TCR metric, judge agreement | ⬜ |
+| 4 | Claim extraction, tiering, TCR metric, judge agreement | ✅ `eval/phase4/report.md` (judge labels pending) |
 | 5 | Generation + image-blind / random-neighbour controls | ⬜ |
 | 6 | Next.js demo on Vercel | ⬜ |
 | 7 | Analysis & write-up | ⬜ |

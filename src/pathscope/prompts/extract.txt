@@ -7,12 +7,20 @@ Some captions are full sentences from textbooks or papers. Others are lists of f
 Rules for claims
 - One fact per claim, written as a plain sentence about the image ("The tissue is liver.",
   "Hepatocytes show fatty change.", "The stain is Congo red.").
+- Split facts that are joined together. "H&E, x100" is two claims (stain, magnification).
+  "Liver, hepatobiliary" is two claims (organ, organ system). "A large polyp, probably senile
+  type" is two claims. "Necrotic tissue at the broad base" is two claims (necrosis, location).
+- Organ-system words on their own ("hepatobiliary", "respiratory", "endocrine", "joints",
+  "nervous") are still a claim: "The specimen is from the respiratory system."
 - Keep the caption's own words where you can. Do not add facts, explanations or textbook knowledge
   that the caption does not state.
 - Drop anything that is not a fact about the image: figure or panel references ("see Fig. 7.15",
-  "A,", "(B)"), arrows and labels, praise or comments about the photo ("excellent example",
-  "good photo", "close-up view"), and fragments that mean nothing on their own ("1", "two",
-  "its", "photo", "this").
+  "A,", "(B)"), arrows, labels and scale bars, praise or comments about the photo ("excellent
+  example", "good photo", "close-up view"), and fragments that mean nothing on their own ("1",
+  "two", "its", "photo", "this").
+- Drop general textbook statements that are not about this particular image: prognosis and
+  prognostic factors, what a lesion "was formerly called", what "some cases" or "most tumours"
+  do, molecular findings that are not shown.
 - Merge exact repeats. If a fragment is a longer version of another, keep only the longer claim.
 - If nothing usable is left, return an empty list.
 
@@ -24,8 +32,11 @@ Tiers
   inflammation, fibrosis, metastasis, hyperplasia, cirrhosis), including its cause.
 - C (case-specific): facts about this patient or this specimen that the image alone cannot tell
   you: age, sex, history, symptoms, treatment, time course ("five weeks after"), grade, stage,
-  sizes and weights, counts, margins, outcome.
-When unsure between A and B, use B if the claim names a disease or process, A otherwise.
+  sizes and weights, counts, margins, outcome, and side or exact site in the body ("left foot").
+A claim that names a lesion, tumour or disease (ulcer, polyp, adenoma, carcinoma, lymphoma,
+infarct, vasculitis) is B even when it is phrased as "the image shows ..." or "the specimen
+includes ...". When unsure between A and B, use B if the claim names a disease or process, A
+otherwise.
 
 Answer in JSON only:
 {"items": [{"id": <id>, "claims": [{"claim": "...", "tier": "A"}, ...]}, ...]}

@@ -1,0 +1,472 @@
+{
+  "queries": 744,
+  "overall": {
+    "claims": 11937,
+    "supported": 2183,
+    "contradicted": 1587,
+    "silent": 8167,
+    "tcr": 0.579,
+    "decided": 0.316,
+    "tcr_lower": 0.183,
+    "ci95": [
+      0.545,
+      0.613
+    ]
+  },
+  "by_tier": {
+    "A": {
+      "claims": 7895,
+      "supported": 1778,
+      "contradicted": 1327,
+      "silent": 4790,
+      "tcr": 0.573,
+      "decided": 0.393,
+      "tcr_lower": 0.225,
+      "ci95": [
+        0.54,
+        0.607
+      ]
+    },
+    "B": {
+      "claims": 3572,
+      "supported": 393,
+      "contradicted": 248,
+      "silent": 2931,
+      "tcr": 0.613,
+      "decided": 0.179,
+      "tcr_lower": 0.11,
+      "ci95": [
+        0.564,
+        0.669
+      ]
+    },
+    "C": {
+      "claims": 470,
+      "supported": 12,
+      "contradicted": 12,
+      "silent": 446,
+      "tcr": 0.5,
+      "decided": 0.051,
+      "tcr_lower": 0.026,
+      "ci95": [
+        0.286,
+        0.714
+      ]
+    }
+  },
+  "by_tier_and_image_type": {
+    "A|diagram": {
+      "claims": 543,
+      "supported": 127,
+      "contradicted": 34,
+      "silent": 382,
+      "tcr": 0.789,
+      "decided": 0.297,
+      "tcr_lower": 0.234
+    },
+    "A|micrograph": {
+      "claims": 4131,
+      "supported": 900,
+      "contradicted": 503,
+      "silent": 2728,
+      "tcr": 0.641,
+      "decided": 0.34,
+      "tcr_lower": 0.218
+    },
+    "A|photo": {
+      "claims": 3221,
+      "supported": 751,
+      "contradicted": 790,
+      "silent": 1680,
+      "tcr": 0.487,
+      "decided": 0.478,
+      "tcr_lower": 0.233
+    },
+    "B|diagram": {
+      "claims": 191,
+      "supported": 6,
+      "contradicted": 6,
+      "silent": 179,
+      "tcr": 0.5,
+      "decided": 0.063,
+      "tcr_lower": 0.031
+    },
+    "B|micrograph": {
+      "claims": 1799,
+      "supported": 263,
+      "contradicted": 102,
+      "silent": 1434,
+      "tcr": 0.721,
+      "decided": 0.203,
+      "tcr_lower": 0.146
+    },
+    "B|photo": {
+      "claims": 1582,
+      "supported": 124,
+      "contradicted": 140,
+      "silent": 1318,
+      "tcr": 0.47,
+      "decided": 0.167,
+      "tcr_lower": 0.078
+    },
+    "C|diagram": {
+      "claims": 39,
+      "supported": 0,
+      "contradicted": 0,
+      "silent": 39,
+      "tcr": null,
+      "decided": 0.0,
+      "tcr_lower": 0.0
+    },
+    "C|micrograph": {
+      "claims": 194,
+      "supported": 7,
+      "contradicted": 4,
+      "silent": 183,
+      "tcr": 0.636,
+      "decided": 0.057,
+      "tcr_lower": 0.036
+    },
+    "C|photo": {
+      "claims": 237,
+      "supported": 5,
+      "contradicted": 8,
+      "silent": 224,
+      "tcr": 0.385,
+      "decided": 0.055,
+      "tcr_lower": 0.021
+    }
+  },
+  "by_tier_and_source": {
+    "A|arch_books": {
+      "claims": 664,
+      "supported": 7,
+      "contradicted": 24,
+      "silent": 633,
+      "tcr": 0.226,
+      "decided": 0.047,
+      "tcr_lower": 0.011
+    },
+    "A|arch_pubmed": {
+      "claims": 642,
+      "supported": 9,
+      "contradicted": 20,
+      "silent": 613,
+      "tcr": 0.31,
+      "decided": 0.045,
+      "tcr_lower": 0.014
+    },
+    "A|pathvqa_train": {
+      "claims": 6589,
+      "supported": 1762,
+      "contradicted": 1283,
+      "silent": 3544,
+      "tcr": 0.579,
+      "decided": 0.462,
+      "tcr_lower": 0.267
+    },
+    "B|arch_books": {
+      "claims": 327,
+      "supported": 2,
+      "contradicted": 16,
+      "silent": 309,
+      "tcr": 0.111,
+      "decided": 0.055,
+      "tcr_lower": 0.006
+    },
+    "B|arch_pubmed": {
+      "claims": 123,
+      "supported": 2,
+      "contradicted": 5,
+      "silent": 116,
+      "tcr": 0.286,
+      "decided": 0.057,
+      "tcr_lower": 0.016
+    },
+    "B|pathvqa_train": {
+      "claims": 3122,
+      "supported": 389,
+      "contradicted": 227,
+      "silent": 2506,
+      "tcr": 0.631,
+      "decided": 0.197,
+      "tcr_lower": 0.125
+    },
+    "C|arch_books": {
+      "claims": 89,
+      "supported": 0,
+      "contradicted": 0,
+      "silent": 89,
+      "tcr": null,
+      "decided": 0.0,
+      "tcr_lower": 0.0
+    },
+    "C|pathvqa_train": {
+      "claims": 364,
+      "supported": 12,
+      "contradicted": 12,
+      "silent": 340,
+      "tcr": 0.5,
+      "decided": 0.066,
+      "tcr_lower": 0.033
+    }
+  },
+  "by_tier_and_rank": {
+    "A|1": {
+      "claims": 1560,
+      "supported": 519,
+      "contradicted": 206,
+      "silent": 835,
+      "tcr": 0.716,
+      "decided": 0.465,
+      "tcr_lower": 0.333
+    },
+    "A|2": {
+      "claims": 1557,
+      "supported": 395,
+      "contradicted": 236,
+      "silent": 926,
+      "tcr": 0.626,
+      "decided": 0.405,
+      "tcr_lower": 0.254
+    },
+    "A|3": {
+      "claims": 1590,
+      "supported": 327,
+      "contradicted": 288,
+      "silent": 975,
+      "tcr": 0.532,
+      "decided": 0.387,
+      "tcr_lower": 0.206
+    },
+    "A|4": {
+      "claims": 1564,
+      "supported": 267,
+      "contradicted": 296,
+      "silent": 1001,
+      "tcr": 0.474,
+      "decided": 0.36,
+      "tcr_lower": 0.171
+    },
+    "A|5": {
+      "claims": 1624,
+      "supported": 270,
+      "contradicted": 301,
+      "silent": 1053,
+      "tcr": 0.473,
+      "decided": 0.352,
+      "tcr_lower": 0.166
+    },
+    "B|1": {
+      "claims": 694,
+      "supported": 162,
+      "contradicted": 27,
+      "silent": 505,
+      "tcr": 0.857,
+      "decided": 0.272,
+      "tcr_lower": 0.233
+    },
+    "B|2": {
+      "claims": 716,
+      "supported": 83,
+      "contradicted": 37,
+      "silent": 596,
+      "tcr": 0.692,
+      "decided": 0.168,
+      "tcr_lower": 0.116
+    },
+    "B|3": {
+      "claims": 714,
+      "supported": 51,
+      "contradicted": 62,
+      "silent": 601,
+      "tcr": 0.451,
+      "decided": 0.158,
+      "tcr_lower": 0.071
+    },
+    "B|4": {
+      "claims": 734,
+      "supported": 50,
+      "contradicted": 58,
+      "silent": 626,
+      "tcr": 0.463,
+      "decided": 0.147,
+      "tcr_lower": 0.068
+    },
+    "B|5": {
+      "claims": 714,
+      "supported": 47,
+      "contradicted": 64,
+      "silent": 603,
+      "tcr": 0.423,
+      "decided": 0.155,
+      "tcr_lower": 0.066
+    },
+    "C|1": {
+      "claims": 100,
+      "supported": 3,
+      "contradicted": 2,
+      "silent": 95,
+      "tcr": 0.6,
+      "decided": 0.05,
+      "tcr_lower": 0.03
+    },
+    "C|2": {
+      "claims": 92,
+      "supported": 7,
+      "contradicted": 2,
+      "silent": 83,
+      "tcr": 0.778,
+      "decided": 0.098,
+      "tcr_lower": 0.076
+    },
+    "C|3": {
+      "claims": 88,
+      "supported": 1,
+      "contradicted": 5,
+      "silent": 82,
+      "tcr": 0.167,
+      "decided": 0.068,
+      "tcr_lower": 0.011
+    },
+    "C|4": {
+      "claims": 90,
+      "supported": 1,
+      "contradicted": 3,
+      "silent": 86,
+      "tcr": 0.25,
+      "decided": 0.044,
+      "tcr_lower": 0.011
+    },
+    "C|5": {
+      "claims": 100,
+      "supported": 0,
+      "contradicted": 0,
+      "silent": 100,
+      "tcr": null,
+      "decided": 0.0,
+      "tcr_lower": 0.0
+    }
+  },
+  "by_tier_and_label_match": {
+    "A|False": {
+      "claims": 5408,
+      "supported": 897,
+      "contradicted": 793,
+      "silent": 3718,
+      "tcr": 0.531,
+      "decided": 0.312,
+      "tcr_lower": 0.166
+    },
+    "A|True": {
+      "claims": 2487,
+      "supported": 881,
+      "contradicted": 534,
+      "silent": 1072,
+      "tcr": 0.623,
+      "decided": 0.569,
+      "tcr_lower": 0.354
+    },
+    "B|False": {
+      "claims": 2375,
+      "supported": 155,
+      "contradicted": 147,
+      "silent": 2073,
+      "tcr": 0.513,
+      "decided": 0.127,
+      "tcr_lower": 0.065
+    },
+    "B|True": {
+      "claims": 1197,
+      "supported": 238,
+      "contradicted": 101,
+      "silent": 858,
+      "tcr": 0.702,
+      "decided": 0.283,
+      "tcr_lower": 0.199
+    },
+    "C|False": {
+      "claims": 341,
+      "supported": 8,
+      "contradicted": 11,
+      "silent": 322,
+      "tcr": 0.421,
+      "decided": 0.056,
+      "tcr_lower": 0.023
+    },
+    "C|True": {
+      "claims": 129,
+      "supported": 4,
+      "contradicted": 1,
+      "silent": 124,
+      "tcr": 0.8,
+      "decided": 0.039,
+      "tcr_lower": 0.031
+    }
+  },
+  "similarity_vs_tcr_spearman": {
+    "pairs": 2043,
+    "rho": 0.152
+  },
+  "reviewed_50_by_same_case": {
+    "A|n": {
+      "claims": 411,
+      "supported": 74,
+      "contradicted": 64,
+      "silent": 273,
+      "tcr": 0.536,
+      "decided": 0.336,
+      "tcr_lower": 0.18
+    },
+    "A|y": {
+      "claims": 139,
+      "supported": 43,
+      "contradicted": 27,
+      "silent": 69,
+      "tcr": 0.614,
+      "decided": 0.504,
+      "tcr_lower": 0.309
+    },
+    "B|n": {
+      "claims": 170,
+      "supported": 10,
+      "contradicted": 10,
+      "silent": 150,
+      "tcr": 0.5,
+      "decided": 0.118,
+      "tcr_lower": 0.059
+    },
+    "B|y": {
+      "claims": 55,
+      "supported": 21,
+      "contradicted": 2,
+      "silent": 32,
+      "tcr": 0.913,
+      "decided": 0.418,
+      "tcr_lower": 0.382
+    },
+    "C|n": {
+      "claims": 40,
+      "supported": 1,
+      "contradicted": 3,
+      "silent": 36,
+      "tcr": 0.25,
+      "decided": 0.1,
+      "tcr_lower": 0.025
+    },
+    "C|y": {
+      "claims": 3,
+      "supported": 1,
+      "contradicted": 0,
+      "silent": 2,
+      "tcr": 1.0,
+      "decided": 0.333,
+      "tcr_lower": 0.333
+    }
+  },
+  "judge_kappa_vs_label_ref": {
+    "n": 50,
+    "kappa": 0.817,
+    "agreement": 0.88
+  }
+}
