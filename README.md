@@ -29,7 +29,7 @@ actually true of the query image, reported overall and per tier.
 | 3 | Retrieval sanity check (50 hand-inspected cases) | ✅ `eval/phase3/report.md` |
 | 4 | Claim extraction, tiering, TCR metric, judge agreement | ✅ `eval/phase4/report.md` (judge labels pending) |
 | 5 | Generation + image-blind / random-neighbour controls | ✅ `eval/phase5/report.md` |
-| 6 | Next.js demo on Vercel | ⬜ |
+| 6 | Next.js demo on Vercel | 🚧 `app/` (see Demo below) |
 | 7 | Analysis & write-up | ⬜ |
 
 Full plan: `docs/implementation_guide.md`.
@@ -101,6 +101,9 @@ uv run pathscope tcr              # -> eval/phase4/tcr.json (+ judge_sample.csv 
 # 8. Phase 5 (Gemini free tier: 500 requests/day, so this takes a few days; both steps resume)
 uv run pathscope generate         # 250 queries x full / blind / random -> eval/phase5/descriptions.csv
 uv run pathscope gen-score        # claims + checks -> eval/phase5/{verdicts.csv,results.json}
+
+# 9. Phase 6 (needs the ARCH zips and the HF cache for the thumbnails)
+uv run pathscope export-demo      # -> app/data/*.json and app/public/img/*.webp
 ```
 
 The committed manifests mean Phases 2+ do **not** need the raw downloads to reproduce the split;
@@ -132,6 +135,24 @@ See `SETUP.md` for the one-time account steps (Qdrant Cloud, GitHub secrets, Hug
 
 13% of test images had a near-duplicate or an identical caption in PathVQA train (none in ARCH).
 Full method and sensitivity tables: `data/stats/phase1_leakage_report.md`.
+
+## Demo
+
+`app/` is a Next.js site: a gallery of the 250 Phase 5 test images and, for each one, its five
+nearest corpus images and the three generated descriptions with every claim marked by tier and
+by whether PathVQA supports it. Neighbours are fetched live from Qdrant through
+`/api/neighbours/[id]`; if the cluster can't be reached, the page falls back to the saved ones.
+Nothing calls an LLM at request time.
+
+```bash
+uv run pathscope export-demo      # data + thumbnails
+cd app
+cp .env.example .env.local        # QDRANT_URL / QDRANT_API_KEY
+npm install
+npm run dev                       # http://localhost:3000
+```
+
+Deploying to Vercel: `SETUP.md`, step 8.
 
 ## Keep-alive
 

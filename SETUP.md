@@ -73,6 +73,18 @@ upgrade in Part 5 of the guide.
 - Groq: https://console.groq.com → API key → `GROQ_API_KEY`
 - Gemini: https://aistudio.google.com/apikey → `GEMINI_API_KEY`
 
+## 8. Vercel, for the Phase 6 demo (10 min)
+
+1. Sign in at https://vercel.com with your GitHub account (Hobby plan, free).
+2. **Add New → Project**, import `yashmyeole/pathscope`.
+3. Set **Root Directory** to `app`. The framework is detected as Next.js; leave the build settings
+   alone.
+4. Under **Environment Variables** add `QDRANT_URL` and `QDRANT_API_KEY` (same values as `.env`).
+5. Deploy. Every push to `main` redeploys.
+
+If the cluster is asleep or the variables are missing, the demo still works: it shows the saved
+neighbours and says so.
+
 ---
 
 **Phase 0 finish line:** `uv run pathscope ping` works locally, the GitHub Action is green, and

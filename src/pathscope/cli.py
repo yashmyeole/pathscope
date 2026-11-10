@@ -287,6 +287,19 @@ def cmd_gen_score(args: argparse.Namespace) -> None:
     print(json.dumps(res, indent=2, default=str))
 
 
+def cmd_export_demo(args: argparse.Namespace) -> None:
+    from pathscope import demo
+    from pathscope.data.pairs import ImageLoader
+
+    df, nbrs = _phase4_inputs()
+    manifest = pd.read_parquet(config.MANIFEST_DIR / "pathvqa_manifest.parquet")
+    split = config.MANIFEST_DIR / "split_v1"
+    rows = pd.concat([pd.read_parquet(split / f"{f}.parquet") for f in ("queries", "corpus")])
+    rows = rows.drop_duplicates("image_id").set_index("image_id")
+    loader = None if args.no_images else ImageLoader()
+    print(json.dumps(demo.export(df, nbrs, manifest, rows, loader), indent=2))
+
+
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(prog="pathscope")
     sp = p.add_subparsers(dest="cmd", required=True)
@@ -363,6 +376,10 @@ def main(argv: list[str] | None = None) -> None:
     a.add_argument("--extract-limit", type=int, default=None)
     a.add_argument("--verify-limit", type=int, default=None)
     a.set_defaults(fn=cmd_gen_score)
+
+    a = sp.add_parser("export-demo", help="Phase 6: JSON + thumbnails for the Next.js demo in app/")
+    a.add_argument("--no-images", action="store_true", help="only write the JSON files")
+    a.set_defaults(fn=cmd_export_demo)
 
     args = p.parse_args(argv)
     args.fn(args)

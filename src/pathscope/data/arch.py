@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import io
 import json
+import time
 import zipfile
 from pathlib import Path
 
@@ -35,6 +36,70 @@ ARCH_URLS = {
 
 def zip_path(subset: str) -> Path:
     return ARCH_DIR / f"{ARCH_SETS[subset]}.zip"
+
+
+class RemoteFile(io.RawIOBase):
+    """Seekable read-only view of a file on a server that supports HTTP range requests.
+    zipfile only reads the central directory and the members it is asked for, so a few
+    images can be pulled out of the 5 GB books zip without downloading it."""
+
+    def __init__(self, url: str):
+        import httpx
+
+        self.url = url
+        self.client = httpx.Client(follow_redirects=True, timeout=120)
+        r = self.client.get(url, headers={"Range": "bytes=0-0"})
+        if r.status_code != 206:
+            raise OSError(f"{url} does not support range requests ({r.status_code})")
+        self.size = int(r.headers["content-range"].rsplit("/", 1)[1])
+        self.pos = 0
+
+    def _get(self, byte_range: str, tries: int = 6):
+        # the Warwick server drops idle keep-alive connections now and then
+        import httpx
+
+        for attempt in range(tries):
+            try:
+                r = self.client.get(self.url, headers={"Range": byte_range})
+                r.raise_for_status()
+                return r
+            except (httpx.TransportError, httpx.HTTPStatusError):
+                if attempt == tries - 1:
+                    raise
+                time.sleep(2 * (attempt + 1))
+
+    def readable(self) -> bool:
+        return True
+
+    def seekable(self) -> bool:
+        return True
+
+    def tell(self) -> int:
+        return self.pos
+
+    def seek(self, offset: int, whence: int = io.SEEK_SET) -> int:
+        start = {io.SEEK_SET: 0, io.SEEK_CUR: self.pos, io.SEEK_END: self.size}[whence]
+        self.pos = start + offset
+        return self.pos
+
+    def readinto(self, buf) -> int:
+        if self.pos >= self.size or not len(buf):
+            return 0
+        end = min(self.pos + len(buf), self.size) - 1
+        r = self._get(f"bytes={self.pos}-{end}")
+        n = len(r.content)
+        buf[:n] = r.content
+        self.pos += n
+        return n
+
+
+def open_zip(subset: str) -> zipfile.ZipFile:
+    """The local zip if it was downloaded, otherwise the one on the ARCH server."""
+    path = zip_path(subset)
+    if path.exists():
+        return zipfile.ZipFile(path)
+    print(f"  {path.name} not found locally, reading members from {ARCH_URLS[subset]}")
+    return zipfile.ZipFile(io.BufferedReader(RemoteFile(ARCH_URLS[subset]), 1 << 20))
 
 
 def load_captions(zf: zipfile.ZipFile, subset: str) -> list[dict]:

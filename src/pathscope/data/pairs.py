@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 import pandas as pd  # noqa: E402
 from PIL import Image  # noqa: E402
 
-from pathscope.data.arch import open_image, zip_path  # noqa: E402
+from pathscope.data.arch import open_image, open_zip  # noqa: E402
 from pathscope.data.pathvqa import _to_pil  # noqa: E402
 
 
@@ -27,7 +27,7 @@ class ImageLoader:
 
     def _zip(self, subset: str) -> zipfile.ZipFile:
         if subset not in self._zips:
-            self._zips[subset] = zipfile.ZipFile(zip_path(subset))
+            self._zips[subset] = open_zip(subset)
         return self._zips[subset]
 
     def load(self, row) -> Image.Image:

@@ -33,6 +33,10 @@ app/node_modules/
 app/.next/
 app/out/
 app/.vercel/
+app/next-env.d.ts
+app/*.tsbuildinfo
+app/.env*.local
+app/npm-debug.log*
 
 # --- os / editor ---
 .DS_Store
