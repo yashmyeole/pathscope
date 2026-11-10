@@ -46,7 +46,7 @@ def _check_items(items, ids):
 def extracted_ids(texts):
     """text_ids whose claims are already in the cache (including captions with no claims)."""
     _, version = _prompt("extract")
-    cache = llm.Cache("extract")
+    cache = llm.Cache.open("extract")
     return {
         tid
         for tid, t in texts.items()
@@ -59,7 +59,7 @@ def extract(texts, batch=12, limit=None, call=None):
     stop (or run out of quota) and start again."""
     call = call or llm.groq_json
     system, version = _prompt("extract")
-    cache = llm.Cache("extract")
+    cache = llm.Cache.open("extract")
     model = llm.GROQ_MODEL if call is llm.groq_json else getattr(call, "__name__", "fake")
     key = {tid: cache.key(model, version, t) for tid, t in texts.items()}
 
@@ -117,35 +117,41 @@ def claims_for_query(qid, nbrs, claims, df):
     return pd.concat(parts, ignore_index=True) if parts else pd.DataFrame()
 
 
-def verify(query_ids, nbrs, claims, df, manifest, limit=None, call=None):
+def check(facts, claims, call=None, ask=True):
+    """Judge a list of claim strings against one image's facts. Returns (labels, asked): labels
+    is None when the answer isn't cached and ask is False, or when the model's answer was
+    malformed; asked says whether an API call was made."""
     call = call or llm.gemini_json
     template, version = _prompt("verify")
-    cache = llm.Cache("verify")
+    cache = llm.Cache.open("verify")
     model = llm.GEMINI_MODEL if call is llm.gemini_json else getattr(call, "__name__", "fake")
+    listing = "\n".join(f"{i}. {c}" for i, c in enumerate(claims, 1))
+    key = cache.key(model, version, facts, listing)
+    labels = cache.get(key)
+    if labels is not None or not ask:
+        return labels, False
+    out = call(template.replace("{facts}", facts).replace("{claims}", listing))["verdicts"]
+    labels = [v.get("label") for v in out]
+    if len(labels) != len(claims) or any(lab not in LABELS for lab in labels):
+        print(f"  got {len(labels)} verdicts for {len(claims)} claims, skipped")
+        return None, True
+    cache.put(key, labels)
+    return labels, True
 
+
+def verify(query_ids, nbrs, claims, df, manifest, limit=None, call=None):
     done, rows = 0, []
     for qid in query_ids:
         qc = claims_for_query(qid, nbrs, claims, df)
         if qc.empty:
             continue
-        facts = facts_for(qid, manifest)
-        listing = "\n".join(f"{i}. {c}" for i, c in enumerate(qc.claim, 1))
-        key = cache.key(model, version, facts, listing)
-        labels = cache.get(key)
-        if labels is None:
-            if limit is not None and done >= limit:
-                continue
-            prompt = template.replace("{facts}", facts).replace("{claims}", listing)
-            out = call(prompt)["verdicts"]
-            labels = [v.get("label") for v in out]
-            if len(labels) != len(qc) or any(lab not in LABELS for lab in labels):
-                print(f"  {qid}: got {len(labels)} verdicts for {len(qc)} claims, skipped")
-                continue
-            cache.put(key, labels)
-            done += 1
-            if done % 25 == 0:
-                print(f"  verified {done} queries")
-        rows.append(qc.assign(query_id=qid, label=labels))
+        ask = limit is None or done < limit
+        labels, asked = check(facts_for(qid, manifest), list(qc.claim), call, ask)
+        done += asked
+        if asked and done % 25 == 0:
+            print(f"  verified {done} queries")
+        if labels is not None:
+            rows.append(qc.assign(query_id=qid, label=labels))
     return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame()
 
 

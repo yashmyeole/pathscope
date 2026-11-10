@@ -239,6 +239,54 @@ def cmd_tcr(args: argparse.Namespace) -> None:
     print(json.dumps(res, indent=2))
 
 
+def _phase5_sets(n):
+    from pathscope import generate as g
+
+    df, nbrs = _phase4_inputs()
+    qids = g.sample_queries(nbrs, n)
+    return df, qids, g.caption_sets(qids, nbrs, df)
+
+
+def cmd_generate(args: argparse.Namespace) -> None:
+    from datasets import load_dataset
+
+    from pathscope import generate as g
+    from pathscope.data.pairs import ImageLoader
+
+    df, qids, sets = _phase5_sets(args.n)
+    test = load_dataset(config.PATHVQA_HF_ID, split="test", cache_dir=str(config.HF_CACHE_DIR))
+    loader = ImageLoader({"test": test})
+    rows = pd.read_parquet(config.MANIFEST_DIR / "split_v1" / "queries.parquet")
+    rows = rows.set_index("image_id")
+
+    def load_image(qid):
+        return loader.load(rows.loc[qid].to_dict())
+
+    g.OUT_DIR.mkdir(parents=True, exist_ok=True)
+    try:
+        g.generate(qids, sets, load_image, limit=args.limit)
+    finally:
+        out = g.generate(qids, sets, load_image, limit=0)
+        out.to_csv(g.OUT_DIR / "descriptions.csv", index=False)
+        print(f"{len(out)}/{len(qids) * len(g.CONDITIONS)} descriptions")
+
+
+def cmd_gen_score(args: argparse.Namespace) -> None:
+    from pathscope import generate as g
+
+    df, _ = _phase4_inputs()
+    gen = pd.read_csv(g.OUT_DIR / "descriptions.csv")
+    manifest = pd.read_parquet(config.MANIFEST_DIR / "pathvqa_manifest.parquet")
+    v = g.score(gen, manifest, args.extract_limit, args.verify_limit)
+    v.to_csv(g.OUT_DIR / "verdicts.csv", index=False)
+    if v.empty:
+        print("nothing verified yet")
+        return
+    res = g.summary(v, df)
+    (g.OUT_DIR / "results.json").write_text(json.dumps(res, indent=2, default=str))
+    print(json.dumps(res, indent=2, default=str))
+
+
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(prog="pathscope")
     sp = p.add_subparsers(dest="cmd", required=True)
@@ -305,6 +353,16 @@ def main(argv: list[str] | None = None) -> None:
 
     a = sp.add_parser("tcr", help="Phase 4: TCR tables + judge agreement")
     a.set_defaults(fn=cmd_tcr)
+
+    a = sp.add_parser("generate", help="Phase 5: descriptions for full / blind / random (Gemini)")
+    a.add_argument("--n", type=int, default=250, help="number of test queries")
+    a.add_argument("--limit", type=int, default=None, help="max new descriptions this run")
+    a.set_defaults(fn=cmd_generate)
+
+    a = sp.add_parser("gen-score", help="Phase 5: claims + checks for the descriptions, gains")
+    a.add_argument("--extract-limit", type=int, default=None)
+    a.add_argument("--verify-limit", type=int, default=None)
+    a.set_defaults(fn=cmd_gen_score)
 
     args = p.parse_args(argv)
     args.fn(args)

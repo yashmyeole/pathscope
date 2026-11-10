@@ -1,0 +1,14 @@
+You are helping describe a pathology image for a research study.
+
+{setup}
+
+Captions of similar-looking images from a reference collection. They may or may not apply to
+this image:
+{captions}
+
+Write a short description of this image in 3 to 5 plain sentences: what kind of image it is
+(gross specimen, micrograph, smear, X-ray, diagram, clinical photo), the organ or tissue, what
+is seen, and the most likely diagnosis if you can give one. Only say things you think are true
+of this image. Don't mention the reference captions or this task.
+
+Answer in JSON only: {"description": "..."}

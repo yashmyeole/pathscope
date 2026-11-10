@@ -28,7 +28,7 @@ actually true of the query image, reported overall and per tier.
 | 2 | PLIP embeddings + Qdrant index | ✅ `pathscope embed / index / neighbors` |
 | 3 | Retrieval sanity check (50 hand-inspected cases) | ✅ `eval/phase3/report.md` |
 | 4 | Claim extraction, tiering, TCR metric, judge agreement | ✅ `eval/phase4/report.md` (judge labels pending) |
-| 5 | Generation + image-blind / random-neighbour controls | ⬜ |
+| 5 | Generation + image-blind / random-neighbour controls | ✅ `eval/phase5/report.md` |
 | 6 | Next.js demo on Vercel | ⬜ |
 | 7 | Analysis & write-up | ⬜ |
 
@@ -97,6 +97,10 @@ uv run pathscope claims --check   # extractor vs the 30 hand-written references
 uv run pathscope claims           # all neighbour captions -> eval/phase4/claims.csv
 uv run pathscope verify           # claims vs each query's Q/A -> eval/phase4/verdicts.csv
 uv run pathscope tcr              # -> eval/phase4/tcr.json (+ judge_sample.csv to label)
+
+# 8. Phase 5 (Gemini free tier: 500 requests/day, so this takes a few days; both steps resume)
+uv run pathscope generate         # 250 queries x full / blind / random -> eval/phase5/descriptions.csv
+uv run pathscope gen-score        # claims + checks -> eval/phase5/{verdicts.csv,results.json}
 ```
 
 The committed manifests mean Phases 2+ do **not** need the raw downloads to reproduce the split;

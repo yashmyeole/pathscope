@@ -1,6 +1,7 @@
 """JSON clients for Groq and Gemini (free tiers) with a jsonl cache, so a run that hits the
 daily cap can just be started again the next day."""
 
+import base64
 import hashlib
 import json
 import os
@@ -24,6 +25,16 @@ class QuotaExhausted(RuntimeError):
 
 
 class Cache:
+    _open = {}
+
+    @classmethod
+    def open(cls, name):
+        """Reuse an already loaded cache instead of re-reading the jsonl file."""
+        path = CACHE_DIR / f"{name}.jsonl"
+        if path not in cls._open:
+            cls._open[path] = cls(name)
+        return cls._open[path]
+
     def __init__(self, name):
         CACHE_DIR.mkdir(parents=True, exist_ok=True)
         self.path = CACHE_DIR / f"{name}.jsonl"
@@ -59,11 +70,11 @@ def _post(url, headers, body, min_gap, tries=10):
         if r.status_code == 200:
             return r.json()
         if r.status_code == 429 or r.status_code >= 500:
-            msg = r.text[:300]
+            msg = r.text
             retry = float(r.headers.get("retry-after", 0) or 0)
             # per-day limits come back as 429 with a long retry-after (or say so in the text)
             if retry > 600 or "per day" in msg.lower():
-                raise QuotaExhausted(msg)
+                raise QuotaExhausted(msg[:300])
             time.sleep(max(retry, wait))
             wait = min(wait * 2, 120)
             continue
@@ -89,12 +100,17 @@ def groq_json(system, user, model=GROQ_MODEL, min_gap=2.5):
     return json.loads(out["choices"][0]["message"]["content"])
 
 
-def gemini_json(prompt, model=GEMINI_MODEL, min_gap=4.5):
+def gemini_json(prompt, model=GEMINI_MODEL, min_gap=4.5, image=None):
+    """image: optional JPEG bytes sent along with the prompt."""
     key = os.environ.get("GEMINI_API_KEY")
     if not key:
         raise RuntimeError("GEMINI_API_KEY is not set (.env)")
+    parts = [{"text": prompt}]
+    if image is not None:
+        data = base64.b64encode(image).decode()
+        parts.insert(0, {"inline_data": {"mime_type": "image/jpeg", "data": data}})
     body = {
-        "contents": [{"parts": [{"text": prompt}]}],
+        "contents": [{"parts": parts}],
         "generationConfig": {"temperature": 0, "responseMimeType": "application/json"},
     }
     out = _post(GEMINI_URL.format(model=model), {"x-goog-api-key": key}, body, min_gap)
