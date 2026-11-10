@@ -1,5 +1,5 @@
-"""Render query/corpus image pairs side by side — used to eyeball pHash near-duplicates when
-choosing the Phase 1 threshold, and reusable in Phase 3 for query/neighbour sheets."""
+"""Render query/corpus image pairs side by side, used to check pHash near-duplicates by eye
+when choosing the leakage threshold."""
 
 from __future__ import annotations
 

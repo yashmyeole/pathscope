@@ -1,74 +1,82 @@
 # PathScope
 
-**Do retrieved captions of visually similar pathology images actually describe a new image?**
+**Do the captions of visually similar pathology images actually describe a new image?**
 
 PathScope is a retrieval-augmented pathology image description system built to *measure* caption
-transferability rather than assume it. We embed ~18k pathology images with [PLIP](https://huggingface.co/vinid/plip),
-store them in Qdrant, retrieve the five nearest neighbours for each query image, and then break every
-retrieved caption into atomic claims sorted into three tiers:
+transferability rather than assume it. About 11.6k pathology images are embedded with
+[PLIP](https://huggingface.co/vinid/plip) and stored in Qdrant. For each test image, the five
+nearest corpus images are retrieved, every one of their captions is broken into single claims in
+three tiers, and each claim is checked against what PathVQA records about the test image:
 
 | Tier | Contains | Expected to transfer? |
 |---|---|---|
-| **A — Visual** | stain, magnification, organ, tissue architecture, cell morphology | Yes |
-| **B — Diagnostic** | disease name, pathological process | Unclear — the interesting case |
-| **C — Case-specific** | grade, stage, measurements, patient age/sex, margins | No |
+| **A, visual** | stain, magnification, organ, tissue architecture, cell morphology | yes |
+| **B, diagnostic** | disease name, pathological process | unclear |
+| **C, case-specific** | grade, stage, measurements, patient age/sex, margins | no |
 
-The headline metric is the **Transferable Claim Rate (TCR)**: the fraction of retrieved claims that are
-actually true of the query image, reported overall and per tier.
+The headline metric is the **transferable claim rate (TCR)**: supported / (supported +
+contradicted), overall and per tier. Claims the evidence says nothing about are never counted as
+wrong.
 
-> CS594 (Vector Databases), University of Illinois at Chicago · Fall 2026 · Yash Manohar Yeole
-> **Research project — not for clinical use.**
+**Results:** [`docs/report.md`](docs/report.md). In short: 58% of checkable neighbour claims are
+true of the new image, transfer drops below a coin flip after the second neighbour, and a
+description model only does better than the captions alone when it can see the image and the
+corpus has no copy of the same textbook figure.
+
+> CS594 Vector Databases, University of Illinois Chicago, Fall 2026. Yash Manohar Yeole.
+> Research project, not for clinical use.
 
 ## Status
 
-| Phase | What | State |
+| Phase | What | Output |
 |---|---|---|
-| 0 | Foundations — repo, Qdrant cluster + keep-alive, PathVQA statistics | ✅ |
-| 1 | Data & leakage control (MD5, pHash, caption overlap) | ✅ `data/stats/phase1_leakage_report.md` |
-| 2 | PLIP embeddings + Qdrant index | ✅ `pathscope embed / index / neighbors` |
-| 3 | Retrieval sanity check (50 hand-inspected cases) | ✅ `eval/phase3/report.md` |
-| 4 | Claim extraction, tiering, TCR metric, judge agreement | ✅ `eval/phase4/report.md` (judge labels pending) |
-| 5 | Generation + image-blind / random-neighbour controls | ✅ `eval/phase5/report.md` |
-| 6 | Next.js demo on Vercel | 🚧 `app/` (see Demo below) |
-| 7 | Analysis & write-up | ⬜ |
-
-Full plan: `docs/implementation_guide.md`.
+| 0 | Repo, Qdrant cluster and keep-alive, PathVQA statistics | `data/stats/pathvqa_stats.md` |
+| 1 | Data split and leakage control (MD5, pHash, caption overlap) | `data/stats/phase1_leakage_report.md` |
+| 2 | PLIP embeddings and Qdrant index | `pathscope embed / index / neighbors` |
+| 3 | Retrieval sanity check | `eval/phase3/report.md` |
+| 4 | Claim extraction, tiers, TCR, judge agreement | `eval/phase4/report.md` |
+| 5 | Generation with image-blind and random-caption controls | `eval/phase5/report.md` |
+| 6 | Next.js demo on Vercel | `app/` |
+| 7 | Analysis and write-up | `docs/report.md` |
 
 ## Layout
 
 ```
 pathscope/
-├── src/pathscope/         # importable package: data loading, hashing, vector store, CLI
-│   ├── config.py          # all paths + env settings
-│   ├── hashing.py         # pixel MD5 (image identity) and pHash (near-duplicates)
-│   ├── vectorstore.py     # Qdrant wrapper: ping / create / upsert / search
-│   ├── cli.py             # `pathscope <command>` — see below
-│   └── data/
-│       ├── pathvqa.py     # HF PathVQA -> per-row manifest with pixel-MD5 image ids
-│       ├── arch.py        # ARCH zips -> per-image manifest (never extracted)
-│       ├── captions.py    # PathVQA pseudo-captions from Q/A clusters
-│       ├── leakage.py     # exact / pHash / text leakage checks
-│       ├── split.py       # queries / dev / corpus manifests (split_v1)
-│       ├── leakage_report.py, stats.py, contact_sheet.py, pairs.py
-├── scripts/               # standalone scripts (CI keep-alive ping)
-├── notebooks/             # exploration + Kaggle GPU notebooks (embedding)
-├── data/
-│   ├── raw/               # HF cache, downloads   (git-ignored)
-│   ├── manifests/         # small parquet tables  (committed)
-│   │   └── split_v1/      # queries.parquet, dev.parquet, corpus.parquet, flags, manual_near_dups.csv
-│   └── stats/             # JSON/MD stats, contact sheets
-├── eval/                  # Phase 4–5 pipelines and result tables
-├── app/                   # Next.js demo (Phase 6)
-└── .github/workflows/     # qdrant-keepalive.yml
+├── src/pathscope/
+│   ├── cli.py             # `pathscope <command>`, one per step below
+│   ├── config.py          # paths and settings
+│   ├── hashing.py         # pixel MD5 (image id) and pHash (near-duplicates)
+│   ├── embed.py           # PLIP embeddings and the image-type classifier
+│   ├── vectorstore.py     # Qdrant: create, upsert, search, neighbours
+│   ├── retrieval.py       # retrieval checks on the stored vectors
+│   ├── llm.py             # Groq / Gemini JSON clients with a response cache
+│   ├── claims.py          # claim extraction, checking, TCR
+│   ├── generate.py        # descriptions under the three conditions
+│   ├── demo.py            # data and thumbnails for the demo
+│   ├── report.py          # recomputes the results and renders docs/report.md
+│   ├── prompts/           # extraction, checking and description prompts
+│   └── data/              # PathVQA and ARCH loading, pseudo-captions, leakage checks, split
+├── app/                   # Next.js demo
+├── data/manifests/        # image manifests and split_v1 (committed)
+├── data/stats/            # dataset statistics and the leakage report
+├── eval/                  # results of phases 3 to 5
+├── docs/                  # report, its template and figures
+├── notebooks/             # first look at PathVQA
+├── scripts/qdrant_ping.py # keep-alive ping used by the GitHub Action
+└── tests/
 ```
 
-## Setup
+## Running it
+
+`uv run pathscope report` is enough to rebuild every number in the report from a clean clone.
+The full pipeline, step by step (account setup is in `SETUP.md`):
 
 ```bash
 # 1. Python env (uv: https://docs.astral.sh/uv/)
 uv sync                      # core deps
 uv sync --extra notebooks    # + jupyter
-# PLIP/torch are only needed to (re)embed — CPU is enough (~20 min): uv sync --extra embed
+# torch and PLIP are only needed to re-embed (CPU is fine, about 20 min): uv sync --extra embed
 
 # 2. Secrets
 cp .env.example .env         # fill in QDRANT_URL / QDRANT_API_KEY
@@ -76,15 +84,15 @@ cp .env.example .env         # fill in QDRANT_URL / QDRANT_API_KEY
 # 3. Phase 0
 uv run pathscope manifest          # downloads PathVQA (~785 MB), hashes every image -> data/manifests/
 uv run pathscope stats             # -> data/stats/pathvqa_stats.{json,md}
-uv run pathscope contact-sheet     # -> data/stats/contact_sheets/*.png  (look at these!)
+uv run pathscope contact-sheet     # -> data/stats/contact_sheets/*.png
 uv run pathscope ping              # cluster responds?
 
-# 4. Phase 1 — put the two ARCH zips in data/raw/arch/ first (links below)
+# 4. Phase 1: put the two ARCH zips in data/raw/arch/ first (links below)
 uv run pathscope arch-manifest     # hashes 7.6k ARCH images straight from the zips
 uv run pathscope split             # leakage checks -> data/manifests/split_v1/
 uv run pathscope leakage-report    # -> data/stats/phase1_leakage_report.md
 
-# 5. Phase 2 — needs the zips + HF cache, torch, and QDRANT_URL / QDRANT_API_KEY in .env
+# 5. Phase 2: needs the zips, the HF cache, torch, and QDRANT_URL / QDRANT_API_KEY in .env
 uv run pathscope embed             # PLIP over corpus + test + dev -> data/embeddings/embeddings.parquet
 uv run pathscope index             # upload (batches of 100), verify counts, self-retrieval check
 uv run pathscope neighbors <image_id>   # 5 nearest corpus neighbours + captions
@@ -102,8 +110,11 @@ uv run pathscope tcr              # -> eval/phase4/tcr.json (+ judge_sample.csv 
 uv run pathscope generate         # 250 queries x full / blind / random -> eval/phase5/descriptions.csv
 uv run pathscope gen-score        # claims + checks -> eval/phase5/{verdicts.csv,results.json}
 
-# 9. Phase 6 (needs the ARCH zips and the HF cache for the thumbnails)
+# 9. Phase 6 (ARCH images are read from the ARCH server if the zips aren't local)
 uv run pathscope export-demo      # -> app/data/*.json and app/public/img/*.webp
+
+# 10. Phase 7 (runs from a clean clone, no keys or downloads needed)
+uv run pathscope report           # recompute every number, draw docs/figures/, render docs/report.md
 ```
 
 The committed manifests mean Phases 2+ do **not** need the raw downloads to reproduce the split;
@@ -114,14 +125,14 @@ See `SETUP.md` for the one-time account steps (Qdrant Cloud, GitHub secrets, Hug
 ## Data
 
 - **PathVQA** (`flaviagiammarino/path-vqa` on HuggingFace): 32,632 Q/A pairs over **4,288 unique images**
-  (train 2,599 / val 832 / test 858). The HF version has no image ids and no captions — only `(image,
-  question, answer)` — so we identify images by pixel MD5 and reconstruct a pseudo-caption per image from
-  its non-yes/no answers. About half the images are micrographs; the rest are gross specimens, clinical
+  (train 2,599 / val 832 / test 858). The HF version has no image ids and no captions, only `(image,
+  question, answer)`, so images are identified by pixel MD5 and each gets a pseudo-caption from
+  its non-yes/no answers. About half the images are micrographs and the rest are gross specimens, clinical
   photographs and diagrams. Statistics: `data/stats/pathvqa_stats.md`; observations:
   `data/stats/phase0_findings.md`.
 - **ARCH** ([Gamper & Rajpoot, CVPR 2021](https://warwick.ac.uk/fac/cross_fac/tia/data/arch/)): the
   downloadable release has **7,579 images** (4,270 textbook figures with multi-panel "bags" + 3,309 PubMed
-  figures), not the 15k in the paper — the download page notes the discrepancy. Real captions, median
+  figures), not the 15k in the paper; the download page notes the discrepancy. Real captions, median
   20 words. Corpus side only. CC BY-NC-SA 4.0. Download `books_set.zip` (5.3 GB) and `pubmed_set.zip`
   (0.5 GB) into `data/raw/arch/`.
 
@@ -138,7 +149,7 @@ Full method and sensitivity tables: `data/stats/phase1_leakage_report.md`.
 
 ## Demo
 
-`app/` is a Next.js site: a gallery of the 250 Phase 5 test images and, for each one, its five
+`app/` is a Next.js site with a gallery of the 250 Phase 5 test images. Each one shows its five
 nearest corpus images and the three generated descriptions with every claim marked by tier and
 by whether PathVQA supports it. Neighbours are fetched live from Qdrant through
 `/api/neighbours/[id]`; if the cluster can't be reached, the page falls back to the saved ones.
@@ -152,13 +163,13 @@ npm install
 npm run dev                       # http://localhost:3000
 ```
 
-Deploying to Vercel: `SETUP.md`, step 8.
+Deploying to Vercel: see `SETUP.md`.
 
 ## Keep-alive
 
-Qdrant Cloud free clusters suspend after 7 idle days and are **deleted after 28**.
-`.github/workflows/qdrant-keepalive.yml` pings the cluster every 3 days and fails loudly if it is
-unreachable. Needs `QDRANT_URL` and `QDRANT_API_KEY` repository secrets.
+Qdrant Cloud free clusters suspend after 7 idle days and are deleted after 28.
+`.github/workflows/qdrant-keepalive.yml` pings the cluster every 3 days and fails if it is
+unreachable. It needs `QDRANT_URL` and `QDRANT_API_KEY` as repository secrets.
 
 ## License
 

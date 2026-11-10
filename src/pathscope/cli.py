@@ -1,5 +1,5 @@
-"""`pathscope` command line. Each phase gets a subcommand so results regenerate from one
-command (guide, Phase 7) instead of from notebook state."""
+"""`pathscope` command line. Each step of the pipeline is a subcommand, so every result can be
+regenerated from the command line rather than from notebook state."""
 
 from __future__ import annotations
 
@@ -39,7 +39,7 @@ def cmd_contact_sheet(args: argparse.Namespace) -> None:
     m = pd.read_parquet(config.MANIFEST_DIR / "pathvqa_manifest.parquet")
     sample = sample_images(m, args.split, args.n, args.seed)
     out = config.STATS_DIR / "contact_sheets" / f"pathvqa_{args.split}_{args.n}_seed{args.seed}.png"
-    render_contact_sheet(ds, sample, out, title=f"PathVQA {args.split} — {args.n} random images")
+    render_contact_sheet(ds, sample, out, title=f"PathVQA {args.split}: {args.n} random images")
     print(f"wrote {out}")
 
 
@@ -300,6 +300,15 @@ def cmd_export_demo(args: argparse.Namespace) -> None:
     print(json.dumps(demo.export(df, nbrs, manifest, rows, loader), indent=2))
 
 
+def cmd_report(args: argparse.Namespace) -> None:
+    from pathscope import report
+
+    out = report.build()
+    print(json.dumps(out, indent=2))
+    if out["phase4_mismatches"] or out["phase5_mismatches"]:
+        sys.exit("recomputed numbers differ from eval/*/tcr.json or results.json")
+
+
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(prog="pathscope")
     sp = p.add_subparsers(dest="cmd", required=True)
@@ -380,6 +389,11 @@ def main(argv: list[str] | None = None) -> None:
     a = sp.add_parser("export-demo", help="Phase 6: JSON + thumbnails for the Next.js demo in app/")
     a.add_argument("--no-images", action="store_true", help="only write the JSON files")
     a.set_defaults(fn=cmd_export_demo)
+
+    a = sp.add_parser(
+        "report", help="Phase 7: recompute results, draw figures, render docs/report.md"
+    )
+    a.set_defaults(fn=cmd_report)
 
     args = p.parse_args(argv)
     args.fn(args)

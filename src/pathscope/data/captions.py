@@ -9,7 +9,7 @@ textbook caption, and the pieces are recoverable:
 
 The subject of a *no* question is a random distractor swapped in by the generator
 ("does peritoneum show thyroid, follicular adenoma?" -> no), so those are deliberately excluded
-from the caption — but kept separately as known-false statements (useful hard negatives later).
+from the caption, but kept separately as known-false statements (useful hard negatives later).
 
 Output per image_id: gold_text (joined, de-duplicated), gold_fragments (list), neg_fragments (list).
 """
@@ -25,7 +25,7 @@ _IMAGE_WORDS = r"(?:this|the) (?:image|picture|slide|section|photo|photograph|fi
 # "does this image show X"  -> content X
 _P_IMAGE_SHOW = re.compile(rf"^does {_IMAGE_WORDS} (?:show|reveal|demonstrate|display) (.+)$")
 _P_IMAGE_IS = re.compile(rf"^is {_IMAGE_WORDS} (?:showing|of|an? example of) (.+)$")
-# "does <subject> show X" — the generator builds negatives by swapping <subject> for a random
+# "does <subject> show X": the generator builds negatives by swapping <subject> for a random
 # phrase, so <subject> is what is false in a "no" row, while X is usually still true.
 _P_SUBJ_SHOW = re.compile(r"^(?:does|do) (.+?) (?:show|shows|reveal|demonstrate|display) (.+)$")
 _P_THERE = re.compile(r"^(?:is|are) there (.+)$")
@@ -38,8 +38,8 @@ _P_AUX = re.compile(r"^(?:is|are|was|were|do|does|did|has|have|had|can|could|wil
 def yesno_parse(q_norm: str) -> tuple[str | None, str | None]:
     """Parse a normalised yes/no question into (content, swapped_subject).
 
-    content         — the phrase asserted about the image ("thyroid follicular adenoma")
-    swapped_subject — for "does <X> show <content>" templates where <X> is not the image itself,
+    content:         the phrase asserted about the image ("thyroid follicular adenoma")
+    swapped_subject: for "does <X> show <content>" templates where <X> is not the image itself,
                       the <X> phrase (what the generator swapped in to make a negative)
     Returns (None, None) only for questions no template recognises.
     """
@@ -59,11 +59,6 @@ def yesno_parse(q_norm: str) -> tuple[str | None, str | None]:
     if m := _P_AUX.match(q):
         return m.group(1).strip(), None
     return None, None
-
-
-def yesno_subject(q_norm: str) -> str | None:
-    """Back-compat helper: the asserted content phrase, or None."""
-    return yesno_parse(q_norm)[0]
 
 
 def _dedup_keep_order(items: list[str]) -> list[str]:

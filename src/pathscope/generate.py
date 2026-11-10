@@ -148,11 +148,6 @@ def score(gen, manifest, extract_limit=None, verify_limit=None):
     return pd.concat(rows, ignore_index=True)[cols] if rows else pd.DataFrame(columns=cols)
 
 
-def _tcr(v):
-    s, c = (v.label == "supported").sum(), (v.label == "contradicted").sum()
-    return s / (s + c) if s + c else np.nan
-
-
 def paired_gain(v, a, b, tier=None, n_boot=1000, seed=config.SEED):
     """TCR(a) - TCR(b) on queries scored in both conditions, with a query-level bootstrap CI."""
     if tier:

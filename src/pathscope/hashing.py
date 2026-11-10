@@ -16,7 +16,7 @@ from PIL import Image
 
 
 def pixel_md5(img: Image.Image) -> str:
-    """MD5 over decoded RGB pixels — identical images give identical ids regardless of
+    """MD5 over decoded RGB pixels. Identical images give identical ids regardless of
     container/encoding. Mode + size are mixed in so a 1x1 black and 2x2 black differ."""
     rgb = img.convert("RGB")
     h = hashlib.md5()

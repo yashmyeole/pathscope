@@ -1,14 +1,14 @@
 """ARCH (Gamper & Rajpoot, CVPR 2021): figure–caption pairs from pathology textbooks and PubMed.
 
 Distributed as two zips (books_set.zip ~5.3 GB, pubmed_set.zip ~0.5 GB) from
-https://warwick.ac.uk/fac/cross_fac/tia/data/arch/ — CC BY-NC-SA 4.0, research use only.
+https://warwick.ac.uk/fac/cross_fac/tia/data/arch/ (CC BY-NC-SA 4.0, research use only).
 
 Each zip holds `<set>/captions.json` (a dict of records with at least `caption` and `uuid`;
-the books set also has `figure_id` + `letter` for multi-panel figures — a "bag" in the paper's
-terminology, one caption shared by all panels) and `<set>/images/<uuid>.{jpg,png}`.
+the books set also has `figure_id` + `letter` for multi-panel figures, a "bag" in the paper's
+terminology with one caption shared by all panels) and `<set>/images/<uuid>.{jpg,png}`.
 
 We never extract the zips: images are read straight from the archive, hashed, and only the
-small per-image manifest is kept. Phase 2 re-reads from the zip on Kaggle in the same way.
+small per-image manifest is kept. Embedding and thumbnails read from the zips the same way.
 """
 
 from __future__ import annotations
@@ -151,7 +151,7 @@ def build_arch_manifest(
     for subset in subsets:
         zp = zip_path(subset)
         if not zp.exists():
-            raise FileNotFoundError(f"{zp} missing — download from {ARCH_URLS[subset]}")
+            raise FileNotFoundError(f"{zp} missing, download it from {ARCH_URLS[subset]}")
         with zipfile.ZipFile(zp) as zf:
             caps = load_captions(zf, subset)
             idx = _image_index(zf, subset)
@@ -188,7 +188,7 @@ def build_arch_manifest(
                             height=img.size[1],
                             mode=img.mode,
                         )
-                    except Exception as e:  # noqa: BLE001 — record, don't crash a 15k-image pass
+                    except Exception as e:  # noqa: BLE001  record it, don't crash the whole pass
                         row["decode_error"] = f"{type(e).__name__}: {e}"[:200]
                 rows.append(row)
             if missing:

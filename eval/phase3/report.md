@@ -78,7 +78,7 @@ paper (Ikezogwo et al., NeurIPS 2023) reports for PLIP. Same model (`vinid/plip`
 We land on top of the published numbers, slightly higher, which fits our pool being a bit smaller
 than theirs (about 7.5k pairs). Two things follow. The embeddings are fine, there's no bug
 dragging retrieval down. And PLIP really is weak on textbook and PubMed figures: the right caption
-is in the top 10 about 5% of the time, the same range as the guide's warning (R@10 around 0.067).
+is in the top 10 about 5% of the time.
 Book figures are easier than PubMed (text to image R@10 10.3% vs 4.9%), probably because many book
 captions describe several panels.
 

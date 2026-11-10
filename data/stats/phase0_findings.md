@@ -1,4 +1,4 @@
-# Phase 0 findings — what PathVQA actually looks like
+# Phase 0 findings: what PathVQA actually looks like
 
 Date: 2 Oct 2026 · Source: `flaviagiammarino/path-vqa` (HF) · Numbers from `pathvqa_stats.json`
 (regenerate with `pathscope manifest && pathscope stats`).
@@ -17,7 +17,7 @@ Date: 2 Oct 2026 · Source: `flaviagiammarino/path-vqa` (HF) · Numbers from `pa
   train/val/test. pHash near-duplicates still need checking in Phase 1 (pHash is already in the manifest).
 - **Question text repeats heavily:** 67% of test rows use a question string that also appears in train,
   and 30% of unique test (question, answer) pairs appear verbatim in train. This is template reuse
-  ("what is present?", "what does this image show?"), not image leakage — but it means any "VQA accuracy"
+  ("what is present?", "what does this image show?"), not image leakage, but it means any "VQA accuracy"
   number on this dataset is soft. Not our metric, good to know.
 - Median answer is **1 word**. Open-ended answers average 6 words (p90 = 11, max 34). Joining all
   non-yes/no answers per image gives a "pseudo-caption" of ~10 words on average (median 7, max ~90).
@@ -42,7 +42,7 @@ Consequences:
    fine for an offline evaluation but should not be on a public resume URL. Restrict the Phase 6 gallery to
    micrographs + gross specimens, selected with the image-type label above.
 3. **Tier C ("case-specific") claims do exist in this data:** "small (700 g)", "premature 30-week gestation
-   infant", "20 ml hemoperitoneum", "slides 7182 and 7183". Good — the tier framework has something to bite on.
+   infant", "20 ml hemoperitoneum", "slides 7182 and 7183". Good: the tier framework has something to bite on.
 
 ## How the questions were generated (visible in the data, matters for Phase 4)
 
@@ -55,14 +55,14 @@ mild-to-moderate acute rejection? no").
 So for claim verification:
 
 - **Gold text for a test image** = the union of its non-yes/no answers + the subjects of its *yes* questions.
-  Do **not** mine the *no* questions — their subjects are random distractors.
+  Do **not** mine the *no* questions; their subjects are random distractors.
 - Yes/no rows are useless as captions but are a free source of **hard negatives** for the judge calibration
   set in Phase 4 (we know "peritoneum" is false for that image).
 
 ## Corpus size check
 
-Guide assumed "~18k = PathVQA train + ARCH". PathVQA train is 2,599 unique images (not 19.6k — that was
-Q/A rows), so corpus ≈ 2.6k + 15.2k ARCH ≈ **17.8k**. The estimate holds, but ARCH is 85% of the corpus,
+The plan assumed "~18k = PathVQA train + ARCH". PathVQA train is 2,599 unique images (19.6k was the
+number of Q/A rows), so corpus ≈ 2.6k + 15.2k ARCH ≈ **17.8k**. The estimate holds, but ARCH is 85% of the corpus,
 and ARCH captions are real figure captions while PathVQA's are reconstructed pseudo-captions. Phase 3/4
 should break results down by corpus source, and the Phase 1 caption-overlap check matters most *within*
 PathVQA (same textbook → same caption fragments on both sides).
@@ -70,6 +70,6 @@ PathVQA (same textbook → same caption fragments on both sides).
 ## Open questions to settle in Phase 1
 
 - Should validation (832 images) join the corpus, the query set, or be held out for prompt tuning in
-  Phase 4? Current lean: **prompt tuning** — we need a set to iterate claim-extraction prompts on that is
+  Phase 4? Current lean: **prompt tuning**, since we need a set to iterate claim-extraction prompts on that is
   not the one we report on.
 - pHash threshold for "same figure": start at Hamming ≤ 12/256 and inspect the pairs near the boundary.

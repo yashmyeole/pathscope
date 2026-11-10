@@ -1,5 +1,4 @@
-"""Render a grid of sample images with their Q/A text — the 'look at twenty images yourself'
-step from Phase 0, and reused in Phase 3 for query-vs-neighbour sheets."""
+"""Render a grid of sample images with their Q/A text, for looking at the data by eye."""
 
 from __future__ import annotations
 

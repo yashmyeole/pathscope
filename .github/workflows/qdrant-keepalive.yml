@@ -1,11 +1,10 @@
 name: Qdrant keep-alive
 
-# Qdrant Cloud free tier suspends after 7 idle days and deletes after 28.
-# Hitting it every 3 days keeps the resume demo alive through breaks.
+# Qdrant Cloud free clusters suspend after 7 idle days and are deleted after 28.
 on:
   schedule:
-    - cron: "17 9 */3 * *"   # 09:17 UTC every 3rd day (odd minute avoids the :00 rush)
-  workflow_dispatch: {}      # lets you trigger it by hand from the Actions tab
+    - cron: "17 9 */3 * *"   # 09:17 UTC every third day
+  workflow_dispatch: {}
 
 jobs:
   ping:

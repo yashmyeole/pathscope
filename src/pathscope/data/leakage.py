@@ -1,10 +1,10 @@
 """Phase 1 leakage checks between a query set and a corpus.
 
-Three independent signals, each reported as its own rate (guide, Phase 1):
+Three independent signals, each reported as its own rate:
 
-  1. exact      — identical decoded pixels (pixel MD5)
-  2. near       — perceptual-hash near-duplicates (re-encoded / rescaled / lightly cropped copies)
-  3. text       — the query image's own gold text appears (near-)verbatim as a corpus caption,
+  1. exact:  identical decoded pixels (pixel MD5)
+  2. near:   perceptual-hash near-duplicates (re-encoded / rescaled / lightly cropped copies)
+  3. text:   the query image's own gold text appears (near-)verbatim as a corpus caption,
                   which means the corpus holds the same textbook figure or sentence and a
                   retrieval+verify loop would be grading against the answer key
 
@@ -19,8 +19,6 @@ from dataclasses import dataclass, field
 import numpy as np
 import pandas as pd
 from rapidfuzz import fuzz, process
-
-# ----------------------------------------------------------------------------- pHash distance
 
 
 def phash_matrix(hashes: pd.Series) -> np.ndarray:
@@ -62,9 +60,6 @@ def nearest_phash(
     return np.take_along_axis(dist, order, axis=1), np.take_along_axis(idx, order, axis=1)
 
 
-# ----------------------------------------------------------------------------- text overlap
-
-
 def longest_fragment(fragments, fallback: str | None) -> str:
     """The most caption-like piece of text we have for an image: the longest gold fragment for
     PathVQA (so organ-system labels like 'endocrine; endocrine system' do not inflate scores),
@@ -86,11 +81,11 @@ def text_overlap(
 ) -> pd.DataFrame:
     """Two text signals per query, both computed on `longest_fragment` text.
 
-    * score / c_idx  — best fuzzy match (token_sort_ratio: order-insensitive but NOT subset-
+    * score / c_idx: best fuzzy match (token_sort_ratio: order-insensitive but NOT subset-
       tolerant, unlike token_set_ratio which scores 100 whenever one side is a subset of the
       other) among texts with >= min_words on both sides. Short texts are ineligible: a
       five-word diagnosis label ("skin kaposis sarcoma") is a class name, not a caption.
-    * label_match    — the query's short text (< min_words) is *identical* (normalised) to a
+    * label_match: the query's short text (< min_words) is *identical* (normalised) to a
       corpus text. Reported, not removed: it marks queries whose exact diagnosis label has an
       exemplar in the corpus, which is a stratification variable for TCR, not leakage.
     """
@@ -134,9 +129,6 @@ def text_overlap(
     return pd.DataFrame(rows)
 
 
-# ----------------------------------------------------------------------------- orchestration
-
-
 @dataclass
 class LeakageConfig:
     # pHash Hamming distance (of 256 bits). Chosen by inspecting every query/corpus pair up to
@@ -178,7 +170,7 @@ def run_leakage(
     # 2. near
     dist, idx = nearest_phash(q.phash, c.phash, k=3)
 
-    # 3. text — on the longest fragment, not the joined pseudo-caption
+    # 3. text, on the longest fragment, not the joined pseudo-caption
     q_key = pd.Series(
         [longest_fragment(f, t) for f, t in zip(q.get("gold_fragments", [None] * len(q)),
                                                 q[q_text_col], strict=True)]
@@ -292,7 +284,7 @@ def run_leakage(
 
 def within_corpus_duplicates(corpus: pd.DataFrame, phash_threshold: int = 12) -> dict:
     """Exact and near duplicates *inside* the corpus (e.g. the same figure in ARCH books and
-    PathVQA train). Exact ones are dropped by the split step; near ones are reported only —
+    PathVQA train). Exact ones are dropped by the split step; near ones are reported only, since
     multi-panel ARCH figures legitimately look alike."""
     c = corpus.reset_index(drop=True)
     exact_groups = c.groupby("image_id").size()

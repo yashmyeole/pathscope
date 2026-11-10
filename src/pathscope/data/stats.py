@@ -1,9 +1,8 @@
 """Phase 0 dataset statistics for PathVQA, computed from the manifest.
 
-The guide asks three questions explicitly — unique images, question repetition between
-train and test, yes/no fraction — plus a few extras that matter for later phases
-(images shared across splits = leakage preview; answer-length distribution = how much
-'caption-like' text we actually have to verify claims against).
+Unique images, question repetition between train and test and the yes/no fraction, plus
+images shared across splits (an early look at leakage) and answer lengths (how much
+caption-like text there is to check claims against).
 """
 
 from __future__ import annotations
@@ -48,7 +47,7 @@ def compute_stats(m: pd.DataFrame) -> dict:
             },
         }
 
-    # --- cross-split overlap -------------------------------------------------------------
+    # cross-split overlap
     by_split = {s: g for s, g in m.groupby("split")}
     tr, te = by_split.get("train"), by_split.get("test")
     va = by_split.get("validation")
@@ -97,14 +96,14 @@ def compute_stats(m: pd.DataFrame) -> dict:
             "images_exact_md5": img_overlap(va, te),
         }
 
-    # --- whole-dataset view ---------------------------------------------------------------
+    # whole-dataset view
     out["total"] = {
         "qa_rows": int(len(m)),
         "unique_images_all_splits": int(m.image_id.nunique()),
         "yes_no_pct": _pct(int((m.answer_type == "yes_no").sum()), len(m)),
     }
 
-    # Most common questions overall — tells you how templated the dataset is.
+    # Most common questions overall, which shows how templated the dataset is.
     top_q = m.q_norm.value_counts().head(15)
     out["top_questions"] = [{"question": q, "count": int(c)} for q, c in top_q.items()]
 
@@ -124,7 +123,7 @@ def write_stats(stats: dict, path: Path) -> None:
 
 def stats_markdown(stats: dict) -> str:
     """Human-readable summary for the README / report."""
-    L = ["# PathVQA — Phase 0 dataset statistics", "", f"Source: `{stats['source']}`", ""]
+    L = ["# PathVQA dataset statistics", "", f"Source: `{stats['source']}`", ""]
     L += [
         "| Split | Q/A rows | Unique images | Q per image | Yes/No % | Median answer (words) |",
         "|---|---|---|---|---|---|",

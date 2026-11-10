@@ -50,7 +50,7 @@ def upsert_batches(
     batch: int = 100,
 ) -> int:
     """Upload in small batches and return the final exact count so the caller can assert it
-    matches the parquet row count (guide, Phase 2: 'do not trust the upload until checked')."""
+    matches the parquet row count."""
     for i in range(0, len(points), batch):
         client.upsert(collection_name=name, points=points[i : i + batch], wait=True)
     return client.count(name, exact=True).count
@@ -71,7 +71,6 @@ def search(
     ).points
 
 
-# ---------------------------------------------------------------- Phase 2: index + neighbours
 PAYLOAD_COLS = ["role", "source", "image_id", "text", "image_type", "figure_id", "label_match"]
 
 

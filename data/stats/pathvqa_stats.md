@@ -1,4 +1,4 @@
-# PathVQA — Phase 0 dataset statistics
+# PathVQA dataset statistics
 
 Source: `flaviagiammarino/path-vqa`
 

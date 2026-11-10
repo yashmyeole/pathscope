@@ -50,7 +50,7 @@ could be checked are too few to say anything (CI 0.29–0.71). PathVQA records a
 the patient, so there is nothing to check age, sex or history against. This is a limit of the
 evidence, not a finding that case-specific claims transfer half the time.
 
-**Visual and diagnostic claims transfer at about the same rate.** The guide expected visual claims
+**Visual and diagnostic claims transfer at about the same rate.** We expected visual claims
 to transfer clearly better. Here B is slightly higher than A and the intervals overlap. Two things
 probably push A down. Most checkable A claims are about organ or organ system, the one thing a
 PathVQA answer states directly, so they're the easiest claims to contradict. And B claims are only

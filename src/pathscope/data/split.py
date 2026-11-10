@@ -83,7 +83,7 @@ def build_split(
     test = _pathvqa_images(pathvqa_manifest, "test")
     arch = _arch_images(arch_manifest)
 
-    # --- corpus: concat, drop exact duplicates (keep first = PathVQA train before ARCH so the
+    # corpus: concat, drop exact duplicates (keep first = PathVQA train before ARCH so the
     # richer per-image Q/A stays attached), report within-corpus near-dups.
     corpus_raw = pd.concat([train, arch], ignore_index=True)
     n_raw = len(corpus_raw)
@@ -100,11 +100,11 @@ def build_split(
     if manual_path.exists() and cfg.manual_near_dups is None:
         cfg.manual_near_dups = pd.read_csv(manual_path)
 
-    # --- leakage of each query-like set against the corpus
+    # leakage of each query-like set against the corpus
     res_test = run_leakage(test, corpus, cfg, q_text_col="text", c_text_col="text")
     res_dev = run_leakage(dev, corpus, cfg, q_text_col="text", c_text_col="text")
 
-    # --- dev vs test: dev is used for prompt tuning, so it must not contain test figures.
+    # dev vs test: dev is used for prompt tuning, so it must not contain test figures.
     # We drop the sibling from DEV (cheap: dev is only for tuning) and keep the test query.
     res_dev_vs_test = run_leakage(dev, test, cfg, q_text_col="text", c_text_col="text")
 

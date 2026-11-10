@@ -28,7 +28,7 @@ def load_pathvqa(cache_dir: Path | None = None) -> DatasetDict:
 
 
 def normalize_text(s: str) -> str:
-    """Lowercase, strip punctuation/whitespace — for overlap counts, not for display."""
+    """Lowercase, strip punctuation/whitespace. For overlap counts, not for display."""
     s = s.lower().strip()
     s = re.sub(r"[^\w\s]", "", s)
     return re.sub(r"\s+", " ", s)
@@ -98,28 +98,3 @@ def build_manifest(
         out_path.parent.mkdir(parents=True, exist_ok=True)
         df.to_parquet(out_path, index=False)
     return df
-
-
-def export_unique_images(
-    ds: DatasetDict,
-    manifest: pd.DataFrame,
-    out_dir: Path,
-    splits: tuple[str, ...] = config.PATHVQA_SPLITS,
-    fmt: str = "png",
-) -> int:
-    """Write each unique image once to out_dir/<split>/<image_id>.<fmt>. Returns count written.
-    Used in Phase 2 so the embedding notebook iterates over files, not Q/A rows."""
-    written = 0
-    for split in splits:
-        sub = manifest[manifest.split == split].drop_duplicates("image_id")
-        (out_dir / split).mkdir(parents=True, exist_ok=True)
-        d = ds[split]
-        for row_idx, image_id in tqdm(
-            zip(sub.row_idx, sub.image_id, strict=True), total=len(sub), desc=f"export:{split}"
-        ):
-            p = out_dir / split / f"{image_id}.{fmt}"
-            if p.exists():
-                continue
-            _to_pil(d[int(row_idx)]["image"]).convert("RGB").save(p)
-            written += 1
-    return written

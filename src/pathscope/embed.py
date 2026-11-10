@@ -2,7 +2,7 @@
 
 Runs anywhere torch runs (CPU is fine: ~12k images). Chunks are checkpointed to disk, so an
 interrupted run resumes instead of restarting. Output: data/embeddings/embeddings.parquet with
-one row per image — role (corpus / test / dev), payload columns, and a 512-d unit vector.
+one row per image: role (corpus / test / dev), payload columns, and a 512-d unit vector.
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ from pathscope.data.split import SPLIT_DIR
 ROLE_FILES = {"corpus": "corpus", "test": "queries", "dev": "dev"}
 CHUNK = 500
 
-# Image type (Phase 3 stratifier, Phase 6 gallery filter): micrograph / photo (gross specimen or
+# Image type, used to split results: micrograph / photo (gross specimen or
 # clinical photograph) / diagram (drawings, plots, X-rays). Zero-shot PLIP prompts failed (74% of
 # the corpus came out "clinical"), so a logistic regression is fitted on the stored embeddings from
 # 148 hand-labelled images (data/manifests/image_type_labels.csv). Stratified 6-fold CV accuracy

@@ -1,91 +1,52 @@
-# One-time setup (Phase 0 manual steps)
+# Accounts and keys
 
-These are the account/credential steps nobody can do for you. ~30 minutes total.
-Tick them off in order; the keep-alive action only works after steps 1–3.
+Everything runs on free tiers. Reproducing the report needs none of this (`uv run pathscope report`
+works from a clean clone); the steps below are for re-running the pipeline or hosting the demo.
 
-## 1. GitHub repo (5 min)
+## Qdrant Cloud
 
-```bash
-cd ~/Desktop/Projects/UIC/SEM3/VectorDB/VectorDB_CS594
-git init -b main                       # already done if you see a .git/ folder
-gh repo create pathscope --public --source=. --remote=origin   # or create on github.com and `git remote add origin ...`
-git add -A && git commit -m "Phase 0: repo scaffold, keep-alive action, PathVQA stats"
-git push -u origin main
-```
-
-Public repo is intentional — it is the one that goes on the resume.
-
-## 2. Qdrant Cloud free cluster (5 min)
-
-1. https://cloud.qdrant.io → sign up (GitHub login is fine, no card).
-2. **Create cluster** → *Free* tier → pick a US region (`us-east4` GCP is fine) → name `pathscope`.
-3. When it is running, open the cluster page and copy:
-   - **Cluster URL** — looks like `https://xxxxxxxx-....us-east4-0.gcp.cloud.qdrant.io:6333`
-   - **API key** — generate one under *API Keys*, copy it once (it is not shown again).
-4. Locally:
+1. Sign up at https://cloud.qdrant.io (no card needed) and create a cluster on the free tier.
+2. Copy the cluster URL (ends in `:6333`) and create an API key.
+3. Put both in `.env`:
    ```bash
-   cp .env.example .env     # paste QDRANT_URL and QDRANT_API_KEY
+   cp .env.example .env     # QDRANT_URL, QDRANT_API_KEY
    uv sync
-   uv run pathscope ping    # expect: {"collections": []}
+   uv run pathscope ping    # {"collections": [...]}
    ```
 
-> Free clusters **suspend after 7 idle days and are deleted after 28.** Step 3 prevents that.
+Free clusters suspend after 7 idle days and are deleted after 28.
 
-## 3. GitHub secrets for the keep-alive action (3 min)
+## Keep-alive action
 
-Repo → *Settings* → *Secrets and variables* → *Actions* → *New repository secret*:
+`.github/workflows/qdrant-keepalive.yml` pings the cluster every 3 days. It needs two repository
+secrets (Settings → Secrets and variables → Actions):
 
 | Name | Value |
 |---|---|
-| `QDRANT_URL` | the cluster URL from step 2 (with `:6333`) |
-| `QDRANT_API_KEY` | the API key from step 2 |
+| `QDRANT_URL` | the cluster URL, with `:6333` |
+| `QDRANT_API_KEY` | the API key |
 
-Then *Actions* tab → **Qdrant keep-alive** → *Run workflow* to test it. A green run that prints
-`{"ts": ..., "ok": true, "collections": [...]}` is the finish line for Phase 0 infrastructure.
+Run it once by hand from the Actions tab to check it. GitHub pauses scheduled workflows after 60
+days without a commit.
 
-Scheduled workflows on GitHub are paused automatically after 60 days with no repo activity —
-any commit resets that clock, which will happen naturally during the semester. Put a reminder for
-the winter break.
+## LLM keys
 
-## 4. HuggingFace account (5 min, long lead time)
+Only needed to re-run claim extraction, checking and generation. All responses are cached in
+`data/llm_cache/`, so a run that hits a daily limit can be restarted the next day.
 
-1. https://huggingface.co/settings/account → change the **primary email** to your `@uic.edu` address
-   and verify it. Gated pathology models reject gmail addresses.
-2. Request access now (takes days to weeks, costs nothing, not needed for v1):
-   - CONCH: https://huggingface.co/MahmoodLab/CONCH
-   - UNI:   https://huggingface.co/MahmoodLab/UNI
-3. Create a read token at https://huggingface.co/settings/tokens → `HF_TOKEN` in `.env`.
-   PLIP (`vinid/plip`) is ungated, so nothing in Phase 2 blocks on this.
-
-## 5. Kaggle (optional now)
-
-Phase 2 was run on CPU (PLIP is small: ~11.6k images in ~20 min), so Kaggle is no longer needed for
-v1. Verify a phone at https://www.kaggle.com only if you want a free GPU later (Phase 5 upgrades).
-
-## 6. Ask about pathologist access (longest lead time of anything)
-
-Email Ron / the professor: "Is there anyone in the UIC pathology department who would spend ~2 hours
-labelling a 50-item subset later in the semester?" Not needed for v1, but it unblocks the strongest
-upgrade in Part 5 of the guide.
-
-## 7. API keys for Phase 4–5 (do when you get there)
-
-- Groq: https://console.groq.com → API key → `GROQ_API_KEY`
+- Groq: https://console.groq.com → `GROQ_API_KEY`
 - Gemini: https://aistudio.google.com/apikey → `GEMINI_API_KEY`
 
-## 8. Vercel, for the Phase 6 demo (10 min)
+## Hugging Face
 
-1. Sign in at https://vercel.com with your GitHub account (Hobby plan, free).
-2. **Add New → Project**, import `yashmyeole/pathscope`.
-3. Set **Root Directory** to `app`. The framework is detected as Next.js; leave the build settings
-   alone.
-4. Under **Environment Variables** add `QDRANT_URL` and `QDRANT_API_KEY` (same values as `.env`).
-5. Deploy. Every push to `main` redeploys.
+PathVQA and PLIP are public, so a token is optional. An `HF_TOKEN` in `.env` only raises the
+download rate limit.
 
-If the cluster is asleep or the variables are missing, the demo still works: it shows the saved
-neighbours and says so.
+## Vercel
 
----
+1. Sign in at https://vercel.com with GitHub (Hobby plan) and import the repository.
+2. Set **Root Directory** to `app`. Next.js is detected automatically.
+3. Add `QDRANT_URL` and `QDRANT_API_KEY` as environment variables.
+4. Deploy. Every push to `main` redeploys.
 
-**Phase 0 finish line:** `uv run pathscope ping` works locally, the GitHub Action is green, and
-`data/stats/pathvqa_stats.md` + the contact sheets exist and you have actually looked at them.
+If the cluster can't be reached, the demo still works with the saved neighbours and says so.
